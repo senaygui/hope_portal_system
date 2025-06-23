@@ -13,15 +13,40 @@ class Ability
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
       can :read, AcademicCalendar
-
+      can :read, Student
+      can :read, Course
+      can :manage, Notice
     when 'vice president'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Curriculum
-
+      can :read, Student
+      can :read, Course
+      can :read, ClassScheduleWithFile
+      can :read, ClassSchedule
+      can :read, ExamScheduleWithFile
+      can :read, Attendance
+      can :manage, Notice
+    when 'quality assurance'
+      can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
+      can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
+      can :read, AcademicCalendar
+      can :read, Student
+      can :read, Course
+      can :read, ClassScheduleWithFile
+      can :read, ClassSchedule
+      can :read, ExamScheduleWithFile
+      can :read, Attendance
+      can :manage, Notice
+      can :read, Program
+      can :read, Curriculum
     when 'program office'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
+      can :read, AcademicCalendar
+      can :read, ClassScheduleWithFile
+      can :read, ClassSchedule
+      can :read, ExamScheduleWithFile
       # can :manage, ClassSchedule
       # can :manage, ExamSchedule
       # can :read, AcademicCalendar
@@ -388,7 +413,7 @@ class Ability
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can %i[read update], Withdrawal, program: { department: { faculty_id: user.faculty_id } }
-      can %i[read update], GradeReport, department: { faculty_id: user.faculty_id }
+      can %i[read], GradeReport, department: { faculty_id: user.faculty_id }
       can %i[read update], MakeupExam, program: { department: { faculty_id: user.faculty_id } }
       can %i[read update], GradeChange # department: {faculty_id: user.faculty_dean}
       can :manage, Assessment
