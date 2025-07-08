@@ -287,6 +287,13 @@ ActiveAdmin.register Student do
 
   csv do
     # column("No") { |student| student.id }
+    column('No') { |_resource| resource_index += 1 }
+    column('Name Of HEI', 'Hope Enterprise University College')
+    column('Campus', 'Hope Lebu')
+    column('Location/Town', 'Addis Ababa')
+    column('Name of Program') { |student| student.program&.program_name }
+    column('Modality', &:admission_type)
+    column('Addmission Date', &:created_at)
     column('Id Number', &:student_id)
     column('First Name', &:first_name)
     column('Middle Name', &:middle_name)
@@ -295,19 +302,18 @@ ActiveAdmin.register Student do
     column('Citizenship', &:nationality)
     column('Date Of Birth', &:date_of_birth)
 
-    column('Grade 10 result') { |student| student.school_or_university_information&.grade_10_result || 'N/A'  }
-    column('Grade 10 year') { |student| student.school_or_university_information&.grade_10_exam_taken_year || 'N/A' }
-    column('Grade 12 result') { |student| student.school_or_university_information&.grade_12_exam_result || 'N/A' }
-    column('Grade 12 year') { |student| student.school_or_university_information&.grade_12_exam_taken_year || 'N/A' }
-
-    # column("Letter of Equivalence") { |student| student.school_or_university_information&.equivalence_letter } # Adjust this column based on your actual field name
-
+    column('Grade 10 Result') { |student| student.school_or_university_information&.grade_10_result || 'N/A' }
+    column('Grade 10  Year') { |student| student.school_or_university_information&.grade_10_exam_taken_year || 'N/A' }
+    column('Grade 12 Result') { |student| student.school_or_university_information&.grade_12_exam_result || 'N/A' }
+    column('Grade 12 Year') { |student| student.school_or_university_information&.grade_12_exam_taken_year || 'N/A' }
     column('TVET/12+2 Program Attend') do |student|
-      student.school_or_university_information&.college_or_university || 'N/A'
+      student.school_or_university_information&.tvet_program_attend || 'N/A'
     end
-    column('Level (L3, L4)', &:study_level) # Assuming study_level is Level (L3, L4)
-    # column("Coc ID") { |student| student.school_or_university_information&.coc_id } # Adjust based on your actual field name
-    column('Coc Attended Date') { |student| student.school_or_university_information&.coc_attendance_date || 'N/A' }
+
+    column('Level(L3,L4') { |student| student.school_or_university_information&.tvet_level || 'N/A' }
+    column('Coc ID') { |student| student.school_or_university_information&.coc_id || 'N/A' }
+    column('Coc Attended Date') { |student| student.school_or_university_information&.coc_attended_date || 'N/A' }
+    column('Degree Attended') { |student| student.school_or_university_information&.field_of_specialization || 'N/A' }
     # column("Degree Attended") { |student| student.school_or_university_information&.degree_attended } # Adjust based on your actual field name
     # column("Total Credit Hour") { |student| student.curriculum&.total_credit_hour } # Adjust based on your actual field name
     # column("GPA") { |student| student.school_or_university_information&.cgpa }
@@ -514,6 +520,11 @@ ActiveAdmin.register Student do
       a.input :level
       a.input :coc_attendance_date, as: :date_time_picker
       a.input :cgpa
+      a.input :tvet_program_attend, label: 'TVET Program Attended'
+      a.input :tvet_level, as: :select, collection: ['Level I', 'Level II', 'Level III', 'Level IV'],
+                           prompt: 'Select TVET Level', label: 'TVET Level'
+      a.input :coc_attended_date, as: :date_time_picker, label: 'COC Attended Date'
+      a.input :coc_id, label: 'COC ID'
     end
 
     f.inputs 'Student Documents', multipart: true do
@@ -556,7 +567,6 @@ ActiveAdmin.register Student do
   action_item :edit, only: :show, priority: 0 do
     link_to 'Approve Student', edit_admin_student_path(student.id, page_name: 'approval')
   end
-  
 
   show title: proc { |student|
     truncate("#{student.first_name.upcase} #{student.middle_name.upcase} #{student.last_name.upcase}",
@@ -608,6 +618,10 @@ ActiveAdmin.register Student do
                 end
                 row :student_id_taken_status
                 row :old_id_number
+                row :tvet_program_attend
+                row :tvet_level
+                row :coc_attended_date
+                row :coc_id
 
                 # row :graduation_status
               end
@@ -677,6 +691,10 @@ ActiveAdmin.register Student do
                 row :level
                 row :coc_attendance_date
                 row :cgpa
+                row :tvet_program_attend
+                row :tvet_level
+                row :coc_attended_date
+                row :coc_id
               end
             end
           end

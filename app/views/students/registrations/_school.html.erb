@@ -49,6 +49,21 @@
       <%= a.date_field :grade_12_exam_taken_year,class: 'form-control datepicker'%>
       <%= a.hint "select year in Gregorian calendar"%>
     </div>
+
+    <div class="col-12 col-md-6 form-group">
+      <%= a.input :tvet_program_attend, input_html: { class: 'form-control', autocomplete: "tvet_program_attend" }, placeholder: "TVET Program Attended", label: "TVET Program Attended" %>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+      <%= a.input :tvet_level, as: :select, collection: ["Level I", "Level II", "Level III", "Level IV"], input_html: { class: 'form-control', autocomplete: "tvet_level" }, prompt: "Select TVET Level", label: "TVET Level" %>
+    </div>
+   
+    <div class="col-12 col-md-6 form-group">
+      <%= a.input :coc_attended_date, as: :date, input_html: { class: 'form-control datepicker' }, placeholder: "COC Attended Date", label: "COC Attended Date" %>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+      <%= a.input :coc_id, input_html: { class: 'form-control', autocomplete: "coc_id" }, placeholder: "COC ID", label: "COC ID" %>
+    </div>
+    
   </div>
 
   <style>
