@@ -286,11 +286,20 @@ ActiveAdmin.register Student do
    end
 
   csv do
-    # column("No") { |student| student.id }
-    column('No') { |_resource| resource_index += 1 }
-    column('Name Of HEI', 'Hope Enterprise University College')
-    column('Campus', 'Hope Lebu')
-    column('Location/Town', 'Addis Ababa')
+    serial = 0
+
+    column 'No.' do |_resource|
+      serial += 1
+    end
+    column 'Name Of HEI' do
+      'Hope Enterprise University College'
+    end
+    column 'Campus' do
+      'Hope Lebu'
+    end
+    column 'Location/Town' do
+      'Addis Ababa'
+    end
     column('Name of Program') { |student| student.program&.program_name }
     column('Modality', &:admission_type)
     column('Addmission Date', &:created_at)
