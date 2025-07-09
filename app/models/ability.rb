@@ -12,6 +12,7 @@ class Ability
     when 'president'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Student
       can :read, Course
