@@ -353,7 +353,6 @@ ActiveAdmin.register Student do
     column :admission_type do |type|
       type.admission_type.capitalize
     end
-    # column :year
     column 'Document Verification' do |s|
       status_tag s.document_verification_status
     end
@@ -364,6 +363,11 @@ ActiveAdmin.register Student do
       c.created_at.strftime('%b %d, %Y')
     end
     actions
+  end
+
+  # Add a custom page or action for the report
+  action_item :student_report, only: :index do
+    link_to 'Student Report', admin_studentstats_path
   end
 
   filter :student_id, label: 'Student ID'
@@ -941,5 +945,12 @@ ActiveAdmin.register Student do
         end
       end
     end
+  end
+end
+
+ActiveAdmin.register_page 'StudentReport' do
+  menu parent: 'Student managment', priority: 11, label: 'Student Report'
+  content title: 'Student Report' do
+    render 'admin/student_report/student_report'
   end
 end
