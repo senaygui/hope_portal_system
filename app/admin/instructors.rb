@@ -1,19 +1,18 @@
-ActiveAdmin.register AdminUser, as: "instructor"  do
-  menu parent: "Department"
-  permit_params :photo, :email, :password, :password_confirmation, :first_name, :last_name, :middle_name, :role, :username, :type_of_employment, :gender, :highest_level_educational_achievement, :department_id
-  
+ActiveAdmin.register AdminUser, as: 'instructor' do
+  menu parent: 'Department'
+  permit_params :photo, :email, :password, :password_confirmation, :first_name, :last_name, :middle_name, :role,
+                :username, :type_of_employment, :gender, :highest_level_educational_achievement, :department_id
+
   controller do
     def scoped_collection
-      super.where(role: "instructor")
+      super.where(role: 'instructor')
     end
   end
-  
-  
 
   index do
     selectable_column
-    column "Full Name", sortable: true do |n|
-      n.name.full 
+    column 'Full Name', sortable: true do |n|
+      n.name.full
     end
     column :email
     column :role
@@ -32,7 +31,7 @@ ActiveAdmin.register AdminUser, as: "instructor"  do
   filter :created_at
 
   form do |f|
-    f.inputs "Instructor Account" do
+    f.inputs 'Instructor Account' do
       f.input :first_name
       f.input :last_name
       f.input :middle_name
@@ -41,24 +40,32 @@ ActiveAdmin.register AdminUser, as: "instructor"  do
       if !f.object.new_record?
         f.input :current_password
       else
-        f.input :role, as: :hidden, :input_html => { :value => "instructor"}
+        f.input :role, as: :hidden, input_html: { value: 'instructor' }
       end
       f.input :password
       f.input :password_confirmation
       f.input :photo, as: :file
-      f.input :type_of_employment
-      f.input :gender, as: :select, collection: ["Male", "Female", "Other"], include_blank: false
-      f.input :highest_level_educational_achievement
+      f.input :type_of_employment, as: :select, collection: %w[Part-time Full-time], include_blank: false
+      f.input :gender, as: :select, collection: %w[Male Female], include_blank: false
+      f.input :highest_level_educational_achievement, as: :select, collection: [
+        'Degree',
+        'Masters',
+        'PhD Candidate',
+        'PhD Holder (Doctor)',
+        'Assistant Professor',
+        'Associate Professor',
+        'Professor'
+      ], include_blank: false
       f.input :department, as: :select, collection: Department.all.collect { |d| [d.name, d.id] }, include_blank: false
     end
     f.actions
   end
 
-  show :title => proc{|instructor| instructor.name.full }  do
-    panel "Instructor Information" do
+  show title: proc { |instructor| instructor.name.full } do
+    panel 'Instructor Information' do
       attributes_table_for instructor do
-        row "photo" do |pt|
-          span image_tag(pt.photo, size: '150x150', class: "img-corner") if pt.photo.attached?
+        row 'photo' do |pt|
+          span image_tag(pt.photo, size: '150x150', class: 'img-corner') if pt.photo.attached?
         end
         row :first_name
         row :last_name
@@ -80,12 +87,11 @@ ActiveAdmin.register AdminUser, as: "instructor"  do
         end
       end
     end
-  end 
+  end
 
   action_item :course_assignments_report, only: :index do
     if current_admin_user.role == 'department head'
       link_to 'Instructor Load Report', course_assignments_report_path, class: 'button'
     end
   end
-  
 end
