@@ -118,7 +118,7 @@ ActiveAdmin.register_page 'StudentStats' do
           column('Year & Semester') do |prog|
             prog.students.where(account_status: 'active').group(:year, :semester).count.map do |(year, sem), count|
               "Year #{year}, Semester #{sem}: #{count}"
-            end.join(', ')
+            end.join('<br/>').html_safe
           end
           column('Total Active') { |prog| prog.students.where(account_status: 'active').count }
         end
