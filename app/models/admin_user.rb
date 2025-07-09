@@ -7,11 +7,14 @@ class AdminUser < ApplicationRecord
   has_one_attached :photo, dependent: :destroy
   has_many :assessment_plans
 
+  attr_accessor :type_of_employment, :gender, :highest_level_educational_achievement
+
   ##validations
     # validates :username , :presence => true,:length => { :within => 2..50 }
     validates :first_name , :presence => true,:length => { :within => 2..50 }
     validates :last_name , :presence => true,:length => { :within => 1..50 }
     validates :role , :presence => true
+    validates :type_of_employment, :gender, :highest_level_educational_achievement, :department_id, presence: true, if: -> { role == 'instructor' }
     # validates :photo, attached: true, content_type: ['image/gif', 'image/png', 'image/jpg', 'image/jpeg']
   ## scope
 

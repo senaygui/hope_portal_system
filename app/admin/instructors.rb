@@ -1,6 +1,6 @@
 ActiveAdmin.register AdminUser, as: "instructor"  do
   menu parent: "Department"
-  permit_params :photo, :email, :password, :password_confirmation,:first_name,:last_name,:middle_name,:role,:username
+  permit_params :photo, :email, :password, :password_confirmation, :first_name, :last_name, :middle_name, :role, :username, :type_of_employment, :gender, :highest_level_educational_achievement, :department_id
   
   controller do
     def scoped_collection
@@ -46,6 +46,10 @@ ActiveAdmin.register AdminUser, as: "instructor"  do
       f.input :password
       f.input :password_confirmation
       f.input :photo, as: :file
+      f.input :type_of_employment
+      f.input :gender, as: :select, collection: ["Male", "Female", "Other"], include_blank: false
+      f.input :highest_level_educational_achievement
+      f.input :department, as: :select, collection: Department.all.collect { |d| [d.name, d.id] }, include_blank: false
     end
     f.actions
   end
@@ -68,6 +72,12 @@ ActiveAdmin.register AdminUser, as: "instructor"  do
         row :last_sign_in_ip
         row :created_at
         row :updated_at
+        row :type_of_employment
+        row :gender
+        row :highest_level_educational_achievement
+        row :department do |instructor|
+          instructor.department&.name
+        end
       end
     end
   end 
