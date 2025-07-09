@@ -60,57 +60,81 @@ ActiveAdmin.register_page 'StudentStats' do
       end
     end
 
-    # Department summary table
-    panel 'Student Count by Department', style: 'width: 100%; margin-bottom: 30px;' do
-      table_for Department.order(:department_name) do
-        column('Department') { |dept| dept.department_name }
-        column('Active') { |dept| dept.students.where(account_status: 'active').count }
-        column('Graduated') { |dept| dept.students.where(graduation_status: 'graduated').count }
-        column('Suspended') { |dept| dept.students.where(account_status: 'suspended').count }
-        column('Withdrawals') { |dept| dept.students.where(account_status: 'withdrawal').count }
-        column('Total') { |dept| dept.students.count }
+    # Department summary table and chart
+    div style: 'display: flex; gap: 40px; align-items: flex-start; margin-bottom: 40px;' do
+      panel 'Student Count by Department', style: 'width: 60%;' do
+        table_for Department.order(:department_name) do
+          column('Department') { |dept| dept.department_name }
+          column('Active') { |dept| dept.students.where(account_status: 'active').count }
+          column('Graduated') { |dept| dept.students.where(graduation_status: 'graduated').count }
+          column('Suspended') { |dept| dept.students.where(account_status: 'suspended').count }
+          column('Withdrawals') { |dept| dept.students.where(account_status: 'withdrawal').count }
+          column('Total') { |dept| dept.students.count }
+        end
+      end
+      div style: 'width: 40%;' do
+        column_chart Department.order(:department_name).map { |dept|
+                       [dept.department_name, dept.students.count]
+                     }, height: '350px', library: { title: { text: 'Total Students by Department' } }
+        pie_chart Department.order(:department_name).map { |dept|
+                    [dept.department_name, dept.students.where(account_status: 'active').count]
+                  }, height: '350px', library: { title: { text: 'Active Students by Department' } }
       end
     end
 
-    # Program summary table
-    panel 'Student Count by Program', style: 'width: 100%;' do
-      table_for Program.order(:program_name) do
-        column('Program') { |prog| prog.program_name }
-        column('Department') { |prog| prog.department&.department_name }
-        column('Active') { |prog| prog.students.where(account_status: 'active').count }
-        column('Graduated') { |prog| prog.students.where(graduation_status: 'graduated').count }
-        column('Suspended') { |prog| prog.students.where(account_status: 'suspended').count }
-        column('Withdrawals') { |prog| prog.students.where(account_status: 'withdrawal').count }
-        column('Total') { |prog| prog.students.count }
+    # Program summary table and chart
+    div style: 'display: flex; gap: 40px; align-items: flex-start; margin-bottom: 40px;' do
+      panel 'Student Count by Program', style: 'width: 60%;' do
+        table_for Program.order(:program_name) do
+          column('Program') { |prog| prog.program_name }
+          column('Department') { |prog| prog.department&.department_name }
+          column('Active') { |prog| prog.students.where(account_status: 'active').count }
+          column('Graduated') { |prog| prog.students.where(graduation_status: 'graduated').count }
+          column('Suspended') { |prog| prog.students.where(account_status: 'suspended').count }
+          column('Withdrawals') { |prog| prog.students.where(account_status: 'withdrawal').count }
+          column('Total') { |prog| prog.students.count }
+        end
+      end
+      div style: 'width: 40%;' do
+        column_chart Program.order(:program_name).map { |prog|
+                       [prog.program_name, prog.students.count]
+                     }, height: '350px', library: { title: { text: 'Total Students by Program' } }
+        pie_chart Program.order(:program_name).map { |prog|
+                    [prog.program_name, prog.students.where(account_status: 'active').count]
+                  }, height: '350px', library: { title: { text: 'Active Students by Program' } }
       end
     end
 
-    # Active students by program, gender, batch, year, semester
-    panel 'Active Students by Program, Gender, Batch, Year, Semester', style: 'width: 100%; margin-top: 30px;' do
-      table_for Program.order(:program_name) do
-        column('Program') { |prog| prog.program_name }
-        column('Department') { |prog| prog.department&.department_name }
-        column('Gender') do |prog|
-          male = prog.students.where(account_status: 'active', gender: 'Male').count
-          female = prog.students.where(account_status: 'active', gender: 'Female').count
-          "Male: #{male}, Female: #{female}"
+    # Active students by program, gender, batch, year
+    div style: 'display: flex; gap: 40px; align-items: flex-start; margin-bottom: 40px;' do
+      panel 'Active Students by Program, Gender, Batch, Year', style: 'width: 60%;' do
+        table_for Program.order(:program_name) do
+          column('Program') { |prog| prog.program_name }
+          column('Gender') do |prog|
+            male = prog.students.where(account_status: 'active', gender: 'Male').count
+            female = prog.students.where(account_status: 'active', gender: 'Female').count
+            "Male: #{male}, Female: #{female}"
+          end
+          column('Year') do |prog|
+            prog.students.where(account_status: 'active').group(:year).count.map do |year, count|
+              "Year #{year}: #{count}"
+            end.join(', ')
+          end
+          column('Total Active') { |prog| prog.students.where(account_status: 'active').count }
         end
-        column('Batch') do |prog|
-          prog.students.where(account_status: 'active').group(:batch).count.map do |batch, count|
-            "#{batch}: #{count}"
-          end.join(', ')
-        end
-        column('Year') do |prog|
-          prog.students.where(account_status: 'active').group(:year).count.map do |year, count|
-            "Year #{year}: #{count}"
-          end.join(', ')
-        end
-        column('Semester') do |prog|
-          prog.students.where(account_status: 'active').group(:semester).count.map do |sem, count|
-            "Semester #{sem}: #{count}"
-          end.join(', ')
-        end
-        column('Total Active') { |prog| prog.students.where(account_status: 'active').count }
+      end
+      div style: 'width: 40%;' do
+        # Gender chart for all programs
+        pie_chart [
+          ['Male', Student.where(account_status: 'active', gender: 'Male').count],
+          ['Female', Student.where(account_status: 'active', gender: 'Female').count]
+        ], height: '180px', library: { title: { text: 'Active Students by Gender' } }
+        # Batch chart for all programs
+        column_chart Student.where(account_status: 'active').group(:batch).count, height: '180px',
+                                                                                  library: { title: { text: 'Active Students by Batch' } }
+        # Year chart for all programs
+        column_chart Student.where(account_status: 'active').group(:year).count, height: '180px',
+                                                                                 library: { title: { text: 'Active Students by Year' } }
       end
     end
   end
