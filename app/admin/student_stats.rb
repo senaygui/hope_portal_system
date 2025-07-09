@@ -115,9 +115,9 @@ ActiveAdmin.register_page 'StudentStats' do
             female = prog.students.where(account_status: 'active', gender: 'Female').count
             "Male: #{male}, Female: #{female}"
           end
-          column('Year') do |prog|
-            prog.students.where(account_status: 'active').group(:year).count.map do |year, count|
-              "Year #{year}: #{count}"
+          column('Year & Semester') do |prog|
+            prog.students.where(account_status: 'active').group(:year, :semester).count.map do |(year, sem), count|
+              "Year #{year}, Semester #{sem}: #{count}"
             end.join(', ')
           end
           column('Total Active') { |prog| prog.students.where(account_status: 'active').count }
