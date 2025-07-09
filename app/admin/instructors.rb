@@ -16,6 +16,9 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
     end
     column :email
     column :role
+    column :department do |instructor|
+      instructor.department&.department_name
+    end
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
@@ -56,7 +59,9 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
         'Associate Professor',
         'Professor'
       ], include_blank: false
-      f.input :department, as: :select, collection: Department.all.collect { |d| [d.name, d.id] }, include_blank: false
+      f.input :department, as: :select, collection: Department.all.collect { |d|
+                                                      [d.department_name, d.id]
+                                                    }, include_blank: false
     end
     f.actions
   end
@@ -83,7 +88,7 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
         row :gender
         row :highest_level_educational_achievement
         row :department do |instructor|
-          instructor.department&.name
+          instructor.department&.department_name
         end
       end
     end
