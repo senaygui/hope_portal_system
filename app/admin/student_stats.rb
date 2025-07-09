@@ -66,7 +66,7 @@ ActiveAdmin.register_page 'StudentStats' do
         table_for Department.order(:department_name) do
           column('Department') { |dept| dept.department_name }
           column('Active') { |dept| dept.students.where(account_status: 'active').count }
-          column('Graduated') { |dept| dept.students.where(graduation_status: 'graduated').count }
+          column('Graduated') { |dept| dept.students.where(graduation_status: 'approved').count }
           column('Suspended') { |dept| dept.students.where(account_status: 'suspended').count }
           column('Withdrawals') { |dept| dept.students.where(account_status: 'withdrawal').count }
           column('Total') { |dept| dept.students.count }
@@ -87,9 +87,8 @@ ActiveAdmin.register_page 'StudentStats' do
       panel 'Student Count by Program', style: 'width: 60%;' do
         table_for Program.order(:program_name) do
           column('Program') { |prog| prog.program_name }
-          column('Department') { |prog| prog.department&.department_name }
           column('Active') { |prog| prog.students.where(account_status: 'active').count }
-          column('Graduated') { |prog| prog.students.where(graduation_status: 'graduated').count }
+          column('Graduated') { |prog| prog.students.where(graduation_status: 'approved').count }
           column('Suspended') { |prog| prog.students.where(account_status: 'suspended').count }
           column('Withdrawals') { |prog| prog.students.where(account_status: 'withdrawal').count }
           column('Total') { |prog| prog.students.count }
