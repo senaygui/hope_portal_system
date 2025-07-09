@@ -1,0 +1,139 @@
+<!-- app/views/student_copy/show.pdf.erb -->
+
+<style>
+  @page {
+    size: A4;
+    margin: 1in;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    font-size: 32px;
+  }
+
+  .certificate {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* .certificate {
+    width: 210mm;
+    height: 297mm;
+    padding: 30mm;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    position: relative;
+  } */
+
+  .header {
+    height: 25%;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .header h2:first-child {
+    color: #00794d;
+    margin: 0;
+    font-size: 36px;
+  }
+
+  .header h1 {
+    color: #002060;
+    margin: 5px 0;
+    font-size: 52px;
+  }
+
+  .header h3 {
+    font-size: 32px;
+    font-weight: normal;
+    margin: 15px 0 5px;
+  }
+
+  .header .title {
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 36px;
+    margin: 10px 0;
+  }
+
+  .content {
+    text-align: center;
+    line-height: 2.2;
+    margin-top: 30px;
+  }
+  .content-text {
+    font-size: 1.2em !important;
+  }
+
+  .content .student-name {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-decoration: underline;
+  }
+
+  .content .program {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 40px;
+    margin: 10px 0;
+  }
+
+  .footer {
+    text-align: center;
+  }
+
+  .signature {
+    margin-bottom: 20px;
+    font-size: 32px;
+  }
+
+  .motto {
+    color: #007ac1;
+    font-style: italic;
+    font-size: 28px;
+  }
+</style>
+
+
+<div class="certificate">
+  <div class="header">
+    <%= image_tag wicked_pdf_asset_base64('logo.jpg'), alt: "Hope Enterprise's University College", style: 'max-height: 150px;' %>
+    <h1>Hope Enterprise University College</h1>
+    <h3>OFFICE OF THE REGISTRAR</h3>
+    <br><br>
+    <h2 class="title">TEMPORARY CERTIFICATE OF GRADUATION</h2>
+  </div>
+
+  <div class="content">
+    <p class="content-text">This is to certify that</p>
+    <p class="student-name"><%= @graduate_student.full_name %></p>
+
+    <p class="content-text" >Graduated from Hope Enterprise University College</p>
+    <p class="content-text">With</p>
+    <p class="program"><%= @graduate_student.program&.program_name %></p>
+    <p><strong>On <%= @graduate_student.created_at.strftime('%d %B, %Y') %></strong></p>
+
+    <p class="content-text">This certificate of graduation has been given pending the printing
+       and issuance of actual diploma.</p>
+  </div>
+
+  <div class="footer">
+    <div class="signature">
+      _____________________________________________________<br>
+      <strong>Registrar</strong>
+    </div>
+    <br  />
+    <p class="motto">Developing Leadership for a World of Hope</p>
+  </div>
+</div>
+
