@@ -17,7 +17,23 @@ ActiveAdmin.register Student, as: 'GraduateStudent' do
   end
 
   csv do
-    # column("No") { |student| student.id }
+    serial = 0
+
+    column 'No.' do |_resource|
+      serial += 1
+    end
+    column 'Name Of HEI' do
+      'Hope Enterprise University College'
+    end
+    column 'Campus' do
+      'Hope Lebu'
+    end
+    column 'Location/Town' do
+      'Addis Ababa'
+    end
+    column('Name of Program') { |student| student.program&.program_name }
+    column('Modality', &:admission_type)
+    column('Addmission Date', &:created_at)
     column('Id Number', &:student_id)
     column('First Name', &:first_name)
     column('Middle Name', &:middle_name)
@@ -26,28 +42,28 @@ ActiveAdmin.register Student, as: 'GraduateStudent' do
     column('Citizenship', &:nationality)
     column('Date Of Birth', &:date_of_birth)
 
-    column('Grade 10 result') { |student| student.school_or_university_information&.grade_10_result || 'N/A'  }
-    column('Grade 10 year') { |student| student.school_or_university_information&.grade_10_exam_taken_year || 'N/A' }
-    column('Grade 12 result') { |student| student.school_or_university_information&.grade_12_exam_result || 'N/A' }
-    column('Grade 12 year') { |student| student.school_or_university_information&.grade_12_exam_taken_year || 'N/A' }
-
-    # column("Letter of Equivalence") { |student| student.school_or_university_information&.equivalence_letter } # Adjust this column based on your actual field name
-
+    column('Grade 10 Result') { |student| student.school_or_university_information&.grade_10_result || 'N/A' }
+    column('Grade 10  Year') { |student| student.school_or_university_information&.grade_10_exam_taken_year || 'N/A' }
+    column('Grade 12 Result') { |student| student.school_or_university_information&.grade_12_exam_result || 'N/A' }
+    column('Grade 12 Year') { |student| student.school_or_university_information&.grade_12_exam_taken_year || 'N/A' }
     column('TVET/12+2 Program Attend') do |student|
-      student.school_or_university_information&.college_or_university || 'N/A'
+      student.school_or_university_information&.tvet_program_attend || 'N/A'
     end
-    column('Level (L3, L4)', &:study_level) # Assuming study_level is Level (L3, L4)
-    # column("Coc ID") { |student| student.school_or_university_information&.coc_id } # Adjust based on your actual field name
-    column('Coc Attended Date') { |student| student.school_or_university_information&.coc_attendance_date || 'N/A' }
-    # Adjust based on your actual field name
-    column('Degree Attended') do |student|
-          student.school_or_university_information&.college_or_university || 'N/A'
-    end
-    # Adjust based on your actual field name
+
+    column('Level(L3,L4') { |student| student.school_or_university_information&.tvet_level || 'N/A' }
+    column('Coc ID') { |student| student.school_or_university_information&.coc_id || 'N/A' }
+    column('Coc Attended Date') { |student| student.school_or_university_information&.coc_attended_date || 'N/A' }
+    column('Degree Attended') { |student| student.school_or_university_information&.field_of_specialization || 'N/A' }
+
     column('Total Credit Hour') do |student|
       Curriculum.where(curriculum_version: student.curriculum_version).last&.total_credit_hour
     end
-    column('GPA') { |student| student.grade_reports.sum(:cgpa) || 'N/A' }
+    column('GPA') do |student|
+      student.grade_reports.last.cumulative_total_grade_point / student.grade_reports.last.cumulative_total_credit_hour || 'N/A'
+    end
+    # column("Degree Attended") { |student| student.school_or_university_information&.degree_attended } # Adjust based on your actual field name
+    # column("Total Credit Hour") { |student| student.curriculum&.total_credit_hour } # Adjust based on your actual field name
+    # column("GPA") { |student| student.school_or_university_information&.cgpa }
   end
 
   index do

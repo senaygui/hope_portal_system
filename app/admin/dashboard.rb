@@ -421,8 +421,9 @@ ActiveAdmin.register_page 'Dashboard' do
                           end
 
             departments.each do |department|
-              panel "#{department.department_name} Department - Instructor Stats" do
+              panel "#{department.department_name} Department - Instructor Stats", style: 'width: 100%;' do
                 instructors = department.admin_users.where(role: 'instructor')
+                total_instructors = instructors.count
                 if instructors.any?
                   # Table summary (counts only)
                   gender_categories = %w[Male Female]
@@ -445,6 +446,7 @@ ActiveAdmin.register_page 'Dashboard' do
                   end.to_h
 
                   table_for [nil] do
+                    column('Total Instructors') { total_instructors }
                     column('Male') { gender_counts['Male'] }
                     column('Female') { gender_counts['Female'] }
                     achievement_categories.each do |ach|
@@ -496,6 +498,7 @@ ActiveAdmin.register_page 'Dashboard' do
     employment_categories = %w[Part-time Full-time]
 
     csv_data = CSV.generate(headers: true) do |csv|
+      csv << ['Hope Enterprise University College']
       csv << ['Department', 'Total Instructors', 'Male', 'Female'] + achievement_categories + employment_categories
       departments = if params[:department_id].present?
                       Department.where(id: params[:department_id])
