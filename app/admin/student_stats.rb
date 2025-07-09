@@ -35,7 +35,7 @@ ActiveAdmin.register_page 'StudentStats' do
           'Graduated Students'
         end
         h1 style: 'font-size: 2.5em; margin: 0; color: #52c41a;' do
-          Student.where(graduation_status: 'graduated').count
+          Student.where(graduation_status: 'approved').count
         end
       end
       # Withdrawals students
