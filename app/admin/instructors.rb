@@ -29,9 +29,15 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
   filter :last_name
   filter :middle_name
   filter :email
+  filter :type_of_employment
+  filter :gender
+  filter :highest_level_educational_achievement
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
+  filter :department_id, as: :search_select_filter, url: proc { admin_departments_path },
+                         fields: %i[department_name id], display_name: 'department_name', minimum_input_length: 2,
+                         order_by: 'id_asc'
 
   form do |f|
     f.inputs 'Instructor Account' do
