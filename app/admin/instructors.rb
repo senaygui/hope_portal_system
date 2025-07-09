@@ -9,6 +9,30 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
     end
   end
 
+  csv do
+    serial = 0
+
+    column 'No.' do |_resource|
+      serial += 1
+    end
+    column 'Name Of HEI' do
+      'Hope Enterprise University College'
+    end
+    column 'Campus' do
+      'Hope Lebu'
+    end
+    column 'Location/Town' do
+      'Addis Ababa'
+    end
+    column('Name of Department') { |instructor| instructor.department&.department_name }
+    column('First Name', &:first_name)
+    column('Middle Name', &:middle_name)
+    column('Last Name', &:last_name)
+    column('Type of employment', &:type_of_employment)
+    column('Highest level educational achievement', &:highest_level_educational_achievement)
+    column('Gender', &:gender)
+  end
+
   index do
     selectable_column
     column 'Full Name', sortable: true do |n|
