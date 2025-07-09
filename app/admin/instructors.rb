@@ -7,6 +7,11 @@ ActiveAdmin.register AdminUser, as: 'instructor' do
     def scoped_collection
       super.where(role: 'instructor')
     end
+
+    def update_resource(object, attributes)
+      update_method = attributes.first[:password].present? ? :update : :update_without_password
+      object.send(update_method, *attributes)
+    end
   end
 
   csv do
