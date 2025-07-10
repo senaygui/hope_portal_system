@@ -121,7 +121,7 @@
     <p class="content-text" >Graduated from Hope Enterprise University College</p>
     <p class="content-text">With</p>
     <p class="program"><%= @graduate_student.program&.program_name %></p>
-    <p><strong>On <%= @graduate_student.created_at.strftime('%d %B, %Y') %></strong></p>
+    <p><strong>On <%= @graduate_student.updated_at.strftime('%d %B, %Y') %></strong></p>
 
     <p class="content-text">This certificate of graduation has been given pending the printing
        and issuance of actual diploma.</p>
