@@ -1,3 +1,5 @@
+<!-- app/views/student_copy/show.pdf.erb -->
+
 <style>
   @page {
     size: A4;
@@ -41,7 +43,7 @@
   .header h2:first-child {
     color: #00794d;
     margin: 0;
-    font-size: 36px;
+    font-size: 25px;
   }
 
   .header h1 {
@@ -69,7 +71,7 @@
     margin-top: 30px;
   }
   .content-text {
-    font-size: 25px !important;
+    font-size: 1.2em !important;
   }
 
   .content .student-name {
@@ -82,7 +84,7 @@
   .content .program {
     font-weight: bold;
     text-decoration: underline;
-    font-size: 32px;
+    font-size: 40px;
     margin: 10px 0;
   }
 
@@ -100,6 +102,39 @@
     font-style: italic;
     font-size: 28px;
   }
+
+  .contact-banner {
+      background-color: #e3f2fd;
+      border: 1px solid #90caf9;
+      padding: 15px 25px;
+      max-width: 800px;
+      margin: 40px auto;
+      font-size: 14px;
+      color: #0d47a1;
+      line-height: 1.6;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-banner b {
+      color: #1565c0;
+    }
+
+    .contact-banner a {
+      color: #0d47a1;
+      text-decoration: underline;
+    }
+
+    .contact-banner .icon {
+      font-style: normal;
+      margin-right: 4px;
+    }
+
+    .contact-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
 </style>
 
 
@@ -108,20 +143,39 @@
     <%= image_tag wicked_pdf_asset_base64('logo.jpg'), alt: "Hope Enterprise's University College", style: 'max-height: 150px;' %>
     <h1>Hope Enterprise University College</h1>
     <h3>OFFICE OF THE REGISTRAR</h3>
-    <br><br>
-    <h2 class="title">TEMPORARY CERTIFICATE OF GRADUATION</h2>
+    
+    <br/>
+    
   </div>
-
+  
   <div class="content">
+    <div class="contact-banner">
+      <div><b>Hope Enterprise University College</b></div>
+      <div>Lafto Sub-City, Kebele 01, Lebu Campus</div>
+
+      <div class="contact-line">
+        <span class="icon">📞</span>
+        Main Office: +251-118-959786 /
+        Admission: +251-118-959285
+        <span class="icon">📠</span> 12382
+      </div>
+
+      <div class="contact-line">
+        Website: <a href="http://www.heuc.edu.et" target="_blank">www.heuc.edu.et</a> |
+        E-mail: <a href="mailto:info@heuc.edu.et">info@heuc.edu.et</a> |
+        Addis Ababa, Ethiopia
+      </div>
+    </div>
+    <h2 class="title">TEMPORARY CERTIFICATE OF GRADUATION</h2>
     <p class="content-text">This is to certify that</p>
     <p class="student-name"><%= @graduate_student.full_name %></p>
 
     <p class="content-text" >Graduated from Hope Enterprise University College</p>
     <p class="content-text">With</p>
     <p class="program"><%= @graduate_student.program&.program_name %></p>
-    <p><strong>On <%= @graduate_student.created_at.strftime('%d %B, %Y') %></strong></p>
+    <p><strong>On <%= @graduate_student.updated_at.strftime('%d %B, %Y') %></strong></p>
 
-    <p class="content-text">This certificate of graduation has been given pending the printing<br>
+    <p class="content-text">This certificate of graduation has been given pending the printing
        and issuance of actual diploma.</p>
   </div>
 
@@ -134,3 +188,4 @@
     <p class="motto">Developing Leadership for a World of Hope</p>
   </div>
 </div>
+

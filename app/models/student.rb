@@ -43,6 +43,7 @@ class Student < ApplicationRecord
   has_many :student_attendances
   has_many :assessments
   has_many :grade_changes
+  has_many :drop_courses, class_name: 'Dropcourse'
   has_one :school_or_university_information, dependent: :destroy
   accepts_nested_attributes_for :school_or_university_information
   has_many :student_courses, dependent: :destroy

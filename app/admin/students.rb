@@ -944,6 +944,72 @@ ActiveAdmin.register Student do
           end
         end
       end
+      tab 'Add/Drop Courses' do
+        panel 'Add/Drop Courses' do
+          table_for student.add_courses do
+            column(:course) { |ac| link_to(ac.course&.course_title, admin_course_path(ac.course)) if ac.course }
+            column(:created_at)
+            column(:status)
+            column('View') { |ac| link_to 'Details', admin_add_course_path(ac) }
+          end
+          table_for student.drop_courses do
+            column(:course) { |dc| link_to(dc.course&.course_title, admin_course_path(dc.course)) if dc.course }
+            column(:created_at)
+            column(:status)
+            column('View') { |dc| link_to 'Details', admin_drop_course_path(dc) }
+          end
+        end
+      end
+      tab 'Grade Change Requests' do
+        panel 'Grade Change Requests' do
+          table_for student.grade_changes do
+            column(:course) { |gc| link_to(gc.course&.course_title, admin_course_path(gc.course)) if gc.course }
+            column(:previous_result_total)
+            column(:previous_letter_grade)
+            column(:current_result_total)
+            column(:current_letter_grade)
+            column 'Status' do |c|
+              status_tag c.department_approval
+            end
+            column(:created_at)
+            column('View') { |gc| link_to 'Details', admin_grade_change_path(gc) }
+          end
+        end
+      end
+      tab 'Makeup Exam Requests' do
+        panel 'Makeup Exam Requests' do
+          table_for student.makeup_exams do
+            column(:course) { |me| link_to(me.course&.course_title, admin_course_path(me.course)) if me.course }
+            column(:reason)
+            column(:status)
+            column(:created_at)
+            column('View') { |me| link_to 'Details', admin_makeup_exam_path(me) }
+          end
+        end
+      end
+      tab 'Withdrawal/Clearance Requests' do
+        panel 'Withdrawal/Clearance Requests' do
+          table_for student.withdrawals do
+            column(:reason)
+            column(:status)
+            column(:created_at)
+            column('View') { |w| link_to 'Details', admin_withdrawal_path(w) }
+          end
+        end
+      end
+      tab 'Invoices' do
+        panel 'Invoices' do
+          table_for student.invoices do
+            column(:invoice_number)
+            column(:amount)
+            column(:status)
+            column(:issued_at)
+            column(:due_date)
+            column(:created_at)
+            column('View') { |inv| link_to 'Details', admin_registration_payment_path(inv) }
+          end
+        end
+      end
     end
   end
 end
