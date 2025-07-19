@@ -307,7 +307,7 @@ class Ability
 
       can %i[read update], MakeupExam
       can %i[read update], Withdrawal
-      can %i[read update], AddCourse
+      can %i[read], AddCourse
       can %i[read update], ExternalTransfer
       can %i[read update], Readmission
       can :manage, Invoice
@@ -402,7 +402,7 @@ class Ability
       can :manage, ExternalTransfer, department_id: user.department_id
       can %i[read update], Department, department_name: user.department.department_name
       can %i[read update], Dropcourse, department_id: user.department_id
-      can %i[read update destroy], AddCourse, department_id: user.department_id
+      can %i[read update], AddCourse, department_id: user.department_id
       can %i[read update destroy], CourseModule, department_id: user.department.id
       can :create, CourseModule
       # can :manage, Exemption
