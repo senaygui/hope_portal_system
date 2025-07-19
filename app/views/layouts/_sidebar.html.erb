@@ -46,12 +46,29 @@
             <p>Course Offering</p>
           </a>
         </li>
-        <!-- Class Schedule -->
-        <li class="nav-item">
-          <%= link_to class_schedules_path, class: "nav-link #{current_class?(class_schedules_path)}", style: "color: #c2c7d0; transition: all 0.3s;" do %>
-            <i class="nav-icon fas fa-calendar" style="color: #adb5bd;"></i>
-            <p>Class Schedule</p>
-          <% end %>
+        <!-- Schedules -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link" style="color: #c2c7d0; transition: all 0.3s;">
+            <i class="nav-icon fas fa-calendar-alt" style="color: #adb5bd;"></i>
+            <p>
+              Schedules
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <%= link_to class_schedule_with_files_path, class: "nav-link "+current_class?(class_schedule_with_files_path), style: "color: #c2c7d0; transition: all 0.3s;" do %>
+                <i class="nav-icon fas fa-file-alt" style="color: #adb5bd;"></i>
+                <p>Class Schedule</p>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to exam_schedule_with_files_path, class: "nav-link "+current_class?(exam_schedule_with_files_path), style: "color: #c2c7d0; transition: all 0.3s;" do %>
+                <i class="nav-icon fas fa-file-pdf" style="color: #adb5bd;"></i>
+                <p>Exam Schedule</p>
+              <% end %>
+            </li>
+          </ul>
         </li>
         
         <!-- Payments -->

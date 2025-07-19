@@ -956,7 +956,7 @@ ActiveAdmin.register Student do
             column(:course) { |dc| link_to(dc.course&.course_title, admin_course_path(dc.course)) if dc.course }
             column(:created_at)
             column(:status)
-            column('View') { |dc| link_to 'Details', admin_drop_course_path(dc) }
+            # column('View') { |dc| link_to 'Details', admin_drop_course_path(dc) }
           end
         end
       end

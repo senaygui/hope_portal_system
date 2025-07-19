@@ -182,6 +182,7 @@ Rails.application.routes.draw do
   resources :class_schedules, only: [:index]
   # resources :class_schedules, only: [:index]
   resources :exam_schedules, only: %i[index new create edit update]
+  resources :exam_schedule_with_files, only: %i[index show]
 
   resources :readmissions, only: %i[index new create] do
     member do
@@ -271,6 +272,7 @@ Rails.application.routes.draw do
   get 'requirements' => 'pages#requirement'
   get 'home' => 'pages#home'
   resources :almunis
+  resources :class_schedule_with_files
   resources :semester_registrations
   resources :invoices
   resources :profiles

@@ -1,5 +1,5 @@
 ActiveAdmin.register Student, as: 'GraduateStudent' do
-  menu parent: 'Student managment'
+  menu parent: 'Student managment', priority: 3
 
   controller do
     def update_resource(object, attributes)

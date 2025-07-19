@@ -1,0 +1,57 @@
+<% provide(:title, "Exam Schedule") %>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Exam Schedule </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Exam Schedule Files</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="col-12 col-md-12">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Exam Schedule</h3>
+    </div>
+    <div class="card-body">
+      <table id='examScheduleFilesTable' class='table table-striped table-sm'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Uploaded At</th>
+            <th>Download</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @exam_schedule_files.each do |file| %>
+            <tr>
+              <td><%= file.name %></td>
+              <td><%= file.created_at.strftime('%b %d, %Y') %></td>
+              <td>
+                <% if file.exam_schedule_file.attached? %>
+                  <%= link_to 'Download', rails_blob_path(file.exam_schedule_file, disposition: 'attachment'), class: 'btn btn-sm btn-primary' %>
+                <% else %>
+                  No file
+                <% end %>
+              </td>
+              <td>
+                <% if file.exam_schedule_file.attached? %>
+                  <%= link_to 'View', exam_schedule_with_file_path(file), class: 'btn btn-sm btn-info', target: '_blank' %>
+                <% else %>
+                  No file
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> 

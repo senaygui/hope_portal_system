@@ -48,16 +48,26 @@ ActiveAdmin.register_page 'StudentStats' do
           Student.where(account_status: 'withdrawal').count
         end
       end
-      # Total students
+      # Sponsored students
       div class: 'widget-card',
-          style: 'background: #f0f5ff; border-radius: 10px; padding: 24px 32px; min-width: 220px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);' do
-        h3 style: 'margin-bottom: 10px; color: #2f54eb;' do
-          'Total Students'
+          style: 'background: #e8f5e9; border-radius: 10px; padding: 24px 32px; min-width: 220px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);' do
+        h3 style: 'margin-bottom: 10px; color: #43a047;' do
+          'Sponsored Students'
         end
-        h1 style: 'font-size: 2.5em; margin: 0; color: #2f54eb;' do
-          Student.count
+        h1 style: 'font-size: 2.5em; margin: 0; color: #43a047;' do
+          Student.where.not(sponsorship_status: [nil, '', 'unsponsored']).count
         end
       end
+      # Total students
+      # div class: 'widget-card',
+      #     style: 'background: #f0f5ff; border-radius: 10px; padding: 24px 32px; min-width: 220px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);' do
+      #   h3 style: 'margin-bottom: 10px; color: #2f54eb;' do
+      #     'Total Students'
+      #   end
+      #   h1 style: 'font-size: 2.5em; margin: 0; color: #2f54eb;' do
+      #     Student.count
+      #   end
+      # end
     end
 
     # Department summary table and chart

@@ -3,7 +3,8 @@ ActiveAdmin.register DocumentRequest do
   config.batch_actions = true
 
   permit_params :first_name, :middle_name, :last_name, :mobile_number, :email, :admission_type, :study_level, :program,
-                :department, :student_status, :year_of_graduation, :document, :status, :track_number, :receipt
+                :department, :student_status, :year_of_graduation, :document, :status, :track_number, :receipt,
+                :student_id, :document_type, :status, :reason, :finance_approval_status
 
   index do
     selectable_column
@@ -21,6 +22,7 @@ ActiveAdmin.register DocumentRequest do
     column :student_status
     column :status
     column :track_number
+    column :finance_approval_status
     actions
   end
 
@@ -51,6 +53,10 @@ ActiveAdmin.register DocumentRequest do
       f.input :receipt, as: :file
       f.input :status, as: :select, collection: %w[Pending Approved Rejected]
       f.input :track_number
+      # f.input :student_id
+      f.input :document_type
+      # f.input :reason
+      f.input :finance_approval_status, as: :select, collection: %w[Pending Approved Rejected]
     end
     f.actions
   end
@@ -83,6 +89,7 @@ ActiveAdmin.register DocumentRequest do
 
       row :status
       row :track_number
+      row :finance_approval_status
       row :created_at
       row :updated_at
     end

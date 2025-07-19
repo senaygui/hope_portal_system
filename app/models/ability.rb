@@ -11,42 +11,51 @@ class Ability
 
     when 'president'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
-      can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Student
       can :read, Course
-      can :manage, Notice
+      can :create, Notice
+      can %i[update destroy], Notice, created_by: user.name.full
+      can :read, Notice
     when 'vice president'
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
-      can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Curriculum
       can :read, Student
       can :read, Course
       can :read, ClassScheduleWithFile
-      can :read, ClassSchedule
-      can :read, ExamScheduleWithFile
+      can :manage, ExamScheduleWithFile
+      # can :read, ClassSchedule
       can :read, Attendance
-      can :manage, Notice
+      can :create, Notice
+      can %i[update destroy], Notice, created_by: user.name.full
+      can :read, Notice
     when 'quality assurance'
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
-      can :read, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
+      can :read, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Student
       can :read, Course
       can :read, ClassScheduleWithFile
-      can :read, ClassSchedule
+      # can :read, ClassSchedule
       can :read, ExamScheduleWithFile
       can :read, Attendance
       can :manage, Notice
       can :read, Program
-      can :read, Curriculum
+      can :manage, Curriculum
+      # can :create, Curriculum
+      # can %i[update destroy], Curriculum, created_by: user.name.full
+      # can :read, Curriculum
     when 'program office'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, ClassScheduleWithFile
-      can :read, ClassSchedule
+      # can :read, ClassSchedule
       can :read, ExamScheduleWithFile
       # can :manage, ClassSchedule
       # can :manage, ExamSchedule
@@ -72,6 +81,7 @@ class Ability
       # can :manage, ClassSchedule
       can :manage, ClassScheduleWithFile
       can :manage, ExamScheduleWithFile
+      # can :manage, ClassSchedule
       can :manage, CourseOffering
       # can :manage, Graduation
       can :manage, PaymentTransaction
@@ -87,6 +97,7 @@ class Ability
       # can :manage, GradeRule
       can :manage, Grade
       can :manage, AdminUser
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
@@ -120,6 +131,7 @@ class Ability
       can :manage, StudentGrade
       can :manage, Exemption
       can :manage, Notice
+
     when 'instructor'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, AcademicCalendar
@@ -166,14 +178,17 @@ class Ability
       can :read, SemesterRegistration
       can :manage, Invoice
     when 'registrar head'
-      can :manage, Assessment
+      # can :manage, Assessment
+      can :manage, AddCourse
+      can :manage, Dropcourse
+      can :read, UneditableCurriculum
       can %i[read update], Transfer
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
-      can :manage, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
-      can :manage, ActiveAdmin::Page, name: 'StudentReport', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'OnlineStudentGrade', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'AssignSection', namespace_name: 'admin'
       can :manage, AcademicCalendar
-      can :manage, AdminUser, role: 'instructor'
+      can :manage, AdminUser, role: 'registrar head'
       can %i[read update], Exemption # , dean_approval_status: 'dean_approval_approved'
       can :manage, Faculty
       can :read, CourseModule
@@ -199,9 +214,10 @@ class Ability
       can :manage, Withdrawal
       can :destroy, Withdrawal, created_by: user.name.full
       can %i[read update], ProgramExemption
-      can :manage, AddAndDrop
-      cannot :destroy, AddAndDrop, created_by: 'self'
-      can :manage, Notice
+      # can :manage, AddAndDrop
+      # cannot :destroy, AddAndDrop, created_by: 'self'
+      can %i[update destroy], Notice, created_by: user.name.full
+      can :read, Notice
     when 'data encoder'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :manage, AcademicCalendar
@@ -286,14 +302,19 @@ class Ability
     when 'finance head'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'FinanceReport', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
 
       can %i[read update], MakeupExam
       can %i[read update], Withdrawal
       can %i[read update], AddCourse
       can %i[read update], ExternalTransfer
       can %i[read update], Readmission
-
       can :manage, Invoice
+      can :manage, RecurringPayment
+      can :manage, PaymentTransaction
+      can :manage, OtherPayment
+      can %i[read update], DocumentRequest
       can :manage, Payment
       cannot :destroy, Invoice
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
@@ -309,8 +330,9 @@ class Ability
       can :read, AcademicCalendar
       can :manage, CollegePayment
       can :read, SemesterRegistration
-      can :manage, Invoice
-      can :manage, Notice
+
+      can %i[update destroy], Notice, created_by: user.name.full
+      can :read, Notice
     when 'regular_finance'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, Program, admission_type: 'regular'
@@ -374,6 +396,8 @@ class Ability
     when 'department head'
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
       can :read, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       # can :manage, ActiveAdmin::Page, name: 'ExternalTransfer', namespace_name: 'admin'
       can :manage, ExternalTransfer, department_id: user.department_id
       can %i[read update], Department, department_name: user.department.department_name
@@ -387,7 +411,7 @@ class Ability
       can :create, Course
       can :manage, AdminUser, role: 'instructor'
       can :create, AdminUser
-      can :manage, Assessment, student: { department_id: user.department_id }
+      # can :manage, Assessment, student: { department_id: user.department_id }
       can %i[read update destroy], Program, department_id: user.department.id
       can :create, Program
       can %i[read update destroy], Curriculum, program: { department_id: user.department.id }
@@ -409,16 +433,18 @@ class Ability
       can %i[read update], GradeChange, department_id: user.department.id
       can %i[read update], GradeReport, department_id: user.department.id
       can %i[read update], Withdrawal # , department_id: user.department.id
-      can %i[read update], AddAndDrop, department_id: user.department.id
+      # can %i[read update], AddAndDrop, department_id: user.department.id
       can %i[read update], MakeupExam, department_id: user.department.id
     when 'dean'
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
+      can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can %i[read update], Withdrawal, program: { department: { faculty_id: user.faculty_id } }
       can %i[read], GradeReport, department: { faculty_id: user.faculty_id }
       can %i[read update], MakeupExam, program: { department: { faculty_id: user.faculty_id } }
       can %i[read update], GradeChange # department: {faculty_id: user.faculty_dean}
-      can :manage, Assessment
+      # can :manage, Assessment
       can :read, AcademicCalendar
       can :read, StudentGrade, department: { faculty_id: user.faculty_id }
       can :manage, Course, program: { department: { faculty_id: user.faculty_id } }
@@ -427,8 +453,11 @@ class Ability
       can :manage, GradeSystem
       can :manage, AssessmentPlan
       can %i[read update], Exemption
-      can :manage, Notice
+      can :create, Notice
+      can %i[update destroy], Notice, created_by: user.name.full
+      can :read, Notice
       can :manage, Department, faculty_id: user.faculty_id
+      can :read, Student
     when 'faculty dean'
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'

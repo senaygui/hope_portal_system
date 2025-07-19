@@ -570,6 +570,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_09_082026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "document_type"
+    t.string "finance_approval_status", default: "Pending"
   end
 
   create_table "dropcourses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -913,6 +914,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_09_082026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "admin_user_id"
+    t.string "created_by"
+    t.string "last_updated_by"
   end
 
   create_table "other_payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

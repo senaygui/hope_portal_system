@@ -6,7 +6,7 @@ class ClassSchedulesController < ApplicationController
     
     
     def index
-      @class_schedules = ClassSchedule.for_student(@student)
+      @class_schedules = ClassSchedule.where(program_id: current_student.program)
     end
   
     def show
@@ -42,7 +42,7 @@ class ClassSchedulesController < ApplicationController
     end
     
     def class_schedules
-      @class_schedules = ClassSchedule.for_student(@student)
+      @class_schedules = ClassSchedule.for_student(current_student)
     end
   
     
