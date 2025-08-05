@@ -66,7 +66,8 @@ class PagesController < ApplicationController
           course_title: course.course.course_title,
           semester: @semester_registration.semester,
           year: @semester_registration.year,
-          created_by: current_student.id
+          created_by: current_student.id,
+          add_course_id: current_student.add_courses.where(status: 1).order(created_at: :desc).first
         )
         course.update(status: :taken) if course_registration.save
       end

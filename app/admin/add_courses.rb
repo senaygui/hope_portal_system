@@ -90,7 +90,7 @@ ActiveAdmin.register AddCourse do
     actions
   end
 
-  show title: proc { |add_course| "Add Course Request ##{add_course.id}" } do
+  show title: proc { |add_course| "Add Course Request For #{add_course.course_title}" } do
     columns do
       column do
         panel 'Student Information' do

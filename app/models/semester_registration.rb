@@ -132,6 +132,7 @@ class SemesterRegistration < ApplicationRecord
           # report.total_grade_point = self.course_registrations.where(enrollment_status: "enrolled").collect { |oi|
           # (!!(oi.student_grade&.letter_grade != "I") && oi.student_grade.present? && !!(oi.student_grade&.letter_grade != "NG")) ? (oi.course.credit_hour * oi.student_grade.grade_point) : 0}.sum
           report.sgpa = report.total_credit_hour == 0 ? 0 : (report.total_grade_point / report.total_credit_hour).round(2)
+
           report.cumulative_total_credit_hour = student.grade_reports.order('created_at DESC').first.cumulative_total_credit_hour + report.total_credit_hour
           report.cumulative_total_grade_point = student.grade_reports.order('created_at DESC').first.cumulative_total_grade_point + report.total_grade_point
           report.cgpa = (report.cumulative_total_grade_point / report.cumulative_total_credit_hour).round(2)
@@ -243,7 +244,7 @@ class SemesterRegistration < ApplicationRecord
           department_id: department.id,
           academic_calendar_id:,
           student_id: student.id,
-          student_full_name:,
+          student_full_name: student.full_name,
           course_id: course.id,
           academic_year: get_academic_year(semester, student),
           course_title: course.course_title,
