@@ -54,7 +54,7 @@ class PagesController < ApplicationController
 
     if @semester_registration
       @total_course.each do |course|
-        course_registration = CourseRegistration.new(
+        course_registration = CourseRegistration.create!(
           semester_registration_id: @semester_registration.id,
           program_id: current_student.program.id,
           department_id: current_student.department.id,
@@ -67,7 +67,7 @@ class PagesController < ApplicationController
           semester: @semester_registration.semester,
           year: @semester_registration.year,
           created_by: current_student.id,
-          add_course_id: current_student.add_courses.where(status: "approved").order(created_at: :desc).first.id
+          add_course_id: course.id
         )
         course.update(status: :taken) if course_registration.save
       end
