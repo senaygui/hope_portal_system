@@ -1,27 +1,170 @@
 <% provide(:title, "Home") %>
 <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
-<style type="text/css">
+<!-- Feather Icons CDN for modern icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+
+<style>
   body {
     background: #f0f0f0;
     font-family: 'Raleway', Arial, sans-serif;
   }
 
-  .banner {
-    width: 350px;
-    height: 200px;
-  }
-
-  h1 {
-    font-size: 2em;
-    font-weight: bold;
-    letter-spacing: .5px;
-  }
-
-  h2 {
-    font-size: 1.75em;
-    font-weight: 600;
-    margin-bottom: 2rem;
+  .hero-banner {
+    background: linear-gradient(120deg, #036696 60%, #077b3f 100%);
+    color: #fff;
+    padding: 3.5rem 1.5rem 2.5rem 1.5rem;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 8px 24px rgba(3,102,150,0.07);
     text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-banner h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-banner p {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.93;
+  }
+
+  .hero-banner .hero-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffd200;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .icon-box-link {
+    text-decoration: none;
+  }
+
+  .icon-box {
+    padding: 32px 18px 28px 18px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(3,102,150,0.08);
+    color: #fff;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+    text-align: center;
+    overflow: hidden;
+    animation: popIn 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .icon-box .icon {
+    font-size: 2.3rem;
+    margin-bottom: 1rem;
+    display: block;
+    transition: transform 0.3s;
+  }
+
+  .icon-box h4 {
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 10px;
+    transition: color 0.3s;
+  }
+
+  .icon-box .icon-tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 10;
+    bottom: 115%;
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    width: 160px;
+    font-size: 14px;
+  }
+
+  .icon-box:hover, .icon-box:focus {
+    background: linear-gradient(135deg, #036696 0%, #077b3f 100%);
+    box-shadow: 0 8px 24px rgba(3,123,63,0.18);
+    transform: translateY(-4px) scale(1.03);
+    border-color: #077b3f;
+  }
+
+  .icon-box:hover .icon-tooltip, .icon-box:focus .icon-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .icon-box:hover .icon {
+    transform: scale(1.1);
+  }
+
+  .icon-box-regular-degree {
+    background: linear-gradient(135deg, #077b3f 0%, #36d1c4 100%);
+  }
+
+  .icon-box-regular-masters {
+    background: linear-gradient(135deg, #e53935 0%, #ff6f00 100%);
+  }
+
+  .icon-box-extension-degree {
+    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+    color: #333;
+  }
+
+  .icon-box-extension-degree h4 {
+    color: #333;
+  }
+
+  .sidebar-icon {
+    margin-right: 12px;
+    vertical-align: middle;
+    color: #036696;
+  }
+
+  .alumni-sidebar-list .list-group-item {
+    display: flex;
+    align-items: center;
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+
+  .alumni-sidebar-list .list-group-item:last-child {
+    border-bottom: none;
+  }
+
+  .alumni-sidebar-list .list-group-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    flex-grow: 1;
+  }
+
+  .alumni-sidebar-list .list-group-item:hover {
+    background: #f8f9fa;
   }
 
   .card {
@@ -48,84 +191,31 @@
     padding: 2rem;
   }
 
-  .icon-box-link {
-    display: block;
-    text-decoration: none;
+  .banner {
+    width: 350px;
+    height: 200px;
   }
 
-  .icon-box {
-    margin-bottom: 20px;
-    padding: 30px 20px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #077b3f 0%, #036696 100%);
-    transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: .5px;
+  }
+
+  h2 {
+    font-size: 1.75em;
+    font-weight: 600;
+    margin-bottom: 2rem;
     text-align: center;
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(3,102,150,0.08);
-    border: 2px solid transparent;
-    position: relative;
-    z-index: 1;
   }
 
-  .icon-box h4 {
-    font-weight: 700;
-    font-size: 20px;
-    color: #fff;
-    margin-top: 10px;
-    transition: color 0.3s;
-  }
-
-  .icon-box:hover, .icon-box:focus {
-    background: linear-gradient(135deg, #036696 0%, #077b3f 100%);
-    box-shadow: 0 8px 24px rgba(3,123,63,0.18);
-    transform: translateY(-4px) scale(1.03);
-    border-color: #077b3f;
-    color: #fff;
-  }
-
-  .icon-box:active {
-    background: #036696;
-    border-color: #077b3f;
-    color: #fff;
-  }
-
-  .icon-box-link:focus .icon-box,
-  .icon-box-link:hover .icon-box {
-    outline: none;
-    box-shadow: 0 8px 24px rgba(3,123,63,0.18);
-  }
-
-  .icon-box p {
-    margin-top: 10px;
-    line-height: 24px;
-    font-size: 14px;
-  }
-
-  .alumni-sidebar-list .list-group-item {
-    border: none;
-    border-bottom: 1px solid #eee;
-    background: #fff;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    transition: background 0.2s;
-  }
-  .alumni-sidebar-list .list-group-item:last-child {
-    border-bottom: none;
-  }
-  .alumni-sidebar-list .list-group-item a {
-    text-decoration: none;
-    display: block;
-  }
-  .alumni-sidebar-list .list-group-item:hover {
-    background: #f8f9fa;
-  }
   @media (max-width: 991.98px) {
     .alumni-sidebar-list .list-group-item {
       padding: 0.75rem 1rem;
       font-size: 0.95rem;
     }
   }
+
   @media (max-width: 767.98px) {
     .alumni-sidebar-list {
       margin-bottom: 2rem;
@@ -141,28 +231,18 @@
       flex: 0 0 100%;
     }
   }
-  .icon-box-regular-degree {
-    background: linear-gradient(135deg, #077b3f 0%, #36d1c4 100%);
-  }
-  .icon-box-regular-masters {
-    background: linear-gradient(135deg, #e53935 0%, #ff6f00 100%);
-    color: #fff;
-  }
-  .icon-box-regular-masters h4 {
-    color: #fff;
-  }
-  .icon-box-extension-degree {
-    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
-    color: #333;
-  }
-  .icon-box-extension-degree h4 {
-    color: #333;
-  }
 </style>
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <span class="hero-icon" data-feather="user-plus"></span>
+  <h1>Admission Portal</h1>
+  <p>Start your journey with us. Choose your preferred study level and modality below!</p>
+</div>
 
 <div class="content mt-3">
   <div class="container-fluid">
-    <div class="row">
+    <div class="row gx-5 gy-4">
       <!-- Main Admission Content -->
       <div class="col-lg-9 col-md-8">
         <div class="card card-primary">
@@ -175,36 +255,41 @@
           <!-- /.card-header -->
           <div class="card-body">
             <h2>In What Study Level And Modality Do You Want To Enroll?</h2>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center gx-4 gy-4">
               <div class="col-lg-4 col-md-6 mb-4">
                 <%= link_to new_student_registration_path(modality: "regular", study_level: "undergraduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
-                  <div class="icon-box icon-box-regular-degree">
+                  <div class="icon-box icon-box-regular-degree" tabindex="0">
+                    <span class="icon" data-feather="book-open"></span>
                     <h4>Regular Degree</h4>
+                    <span class="icon-tooltip">Standard undergraduate program (on-campus)</span>
                   </div>
                 <% end %>
               </div>
               <div class="col-lg-4 col-md-6 mb-4">
                 <%= link_to new_student_registration_path(modality: "extention", study_level: "undergraduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
-                  <div class="icon-box icon-box-extension-degree">
+                  <div class="icon-box icon-box-extension-degree" tabindex="0">
+                    <span class="icon" data-feather="clock"></span>
                     <h4>Extension Degree</h4>
+                    <span class="icon-tooltip">Flexible undergraduate program (evening/weekend)</span>
                   </div>
                 <% end %>
               </div>
               <div class="col-lg-4 col-md-6 mb-4">
                 <%= link_to new_student_registration_path(modality: "regular", study_level: "graduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
-                  <div class="icon-box icon-box-regular-masters">
+                  <div class="icon-box icon-box-regular-masters" tabindex="0">
+                    <span class="icon" data-feather="award"></span>
                     <h4>Regular Masters</h4>
+                    <span class="icon-tooltip">Graduate-level master's program (on-campus)</span>
                   </div>
                 <% end %>
               </div>
-              
             </div>
           </div>
           <!-- /.card-body -->
         </div>
       </div>
       <!-- Alumni Services Sidebar -->
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="col-lg-3 col-md-4">
         <div class="card" style="position:sticky;top:30px;">
           <div class="card-header" style="background:#077b3f;color:#fff;">
             <h4 class="mb-0">Alumni Services</h4>
@@ -212,38 +297,50 @@
           <div class="card-body p-0">
             <ul class="list-group list-group-flush alumni-sidebar-list">
               <li class="list-group-item">
-                <%= link_to 'Official Transcript', new_document_request_path(document_type: 'Official Transcript'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="file-text"></span>
+                <%= link_to 'Official Transcript', new_document_request_path(document_type: 'Official Transcript') %>
               </li>
               <li class="list-group-item">
-                <%= link_to 'Original Degree', new_document_request_path(document_type: 'Original Degree'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="award"></span>
+                <%= link_to 'Original Degree', new_document_request_path(document_type: 'Original Degree') %>
               </li>
               <li class="list-group-item">
-                <%= link_to 'Temporary Certificate', new_document_request_path(document_type: 'Temporary Certificate'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="file"></span>
+                <%= link_to 'Temporary Certificate', new_document_request_path(document_type: 'Temporary Certificate') %>
               </li>
               <li class="list-group-item">
-                <%= link_to 'Student Copy', new_document_request_path(document_type: 'Student Copy'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="copy"></span>
+                <%= link_to 'Student Copy', new_document_request_path(document_type: 'Student Copy') %>
               </li>
               <li class="list-group-item">
-                <%= link_to 'To Whom It May Concern', new_document_request_path(document_type: 'To Whom It May Concern'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="user"></span>
+                <%= link_to 'To Whom It May Concern', new_document_request_path(document_type: 'To Whom It May Concern') %>
               </li>
               <li class="list-group-item">
-                <%= link_to 'Track Your Request', track_form_document_requests_path(document_type: 'Track Request'), style: 'color:#036696;font-weight:600;' %>
+                <span class="sidebar-icon" data-feather="search"></span>
+                <%= link_to 'Track Your Request', track_form_document_requests_path(document_type: 'Track Request') %>
               </li>
             </ul>
           </div>
         </div>
-        <div class="card" style="position:sticky;top:30px;">
-              <div class="card-header" style="background:#077b3f;color:#fff; border-radius:0;">
-                <h4 class="mb-0">Other Services</h4>
-              </div>
-              <ul class="list-group list-group-flush alumni-sidebar-list">
-                <li class="list-group-item">
-                  <%= link_to 'Apply for Transfer', new_external_transfer_path, style: 'color:#036696;font-weight:600;' %>
-                </li>
-              </ul>
-            </div>
+        <div class="card mt-4" style="position:sticky;top:30px;">
+          <div class="card-header" style="background:#077b3f;color:#fff;">
+            <h4 class="mb-0">Other Services</h4>
+          </div>
+          <ul class="list-group list-group-flush alumni-sidebar-list">
+            <li class="list-group-item">
+              <span class="sidebar-icon" data-feather="repeat"></span>
+              <%= link_to 'Apply for Transfer', new_external_transfer_path %>
+            </li>
+          </ul>
+        </div>
       </div>
-      
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    feather.replace();
+  });
+</script>
