@@ -89,6 +89,6 @@ class CourseRegistration < ApplicationRecord
   end
 
   def attribute_assignment
-    self[:section_id] = semester_registration.section.id if !section.present? && semester_registration.section.present?
+    self[:section_id] = semester_registration.section.id if !section.present? && semester_registration.section.present? && !add_course_id.present?
   end
 end
