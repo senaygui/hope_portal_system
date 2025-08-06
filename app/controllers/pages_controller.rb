@@ -54,23 +54,26 @@ class PagesController < ApplicationController
 
     if @semester_registration
       @total_course.each do |course|
-        course_registration = CourseRegistration.create!(
-          semester_registration_id: @semester_registration.id,
-          program_id: current_student.program.id,
-          department_id: current_student.department.id,
-          academic_calendar_id: @semester_registration.academic_calendar_id,
-          student_id: current_student.id,
-          student_full_name: current_student.full_name,
-          course_id: course.course.id,
-          academic_year: @semester_registration.academic_calendar.calender_year_in_gc,
-          course_title: course.course.course_title,
-          semester: @semester_registration.semester,
-          year: @semester_registration.year,
-          created_by: current_student.id,
-          add_course_id: course.id,
-          enrollment_status: 'enrolled'
-        )
-        course.update(status: :taken) if course_registration.save
+        CourseRegistration.create! do |course_registration|
+          course_registration.semester_registration_id = @semester_registration.id
+          course_registration.program_id = current_student.program.id
+          course_registration.department_id = current_student.department.id
+          course_registration.academic_calendar_id = @semester_registration.academic_calendar_id
+          course_registration.student_id = current_student.id
+          course_registration.student_full_name = current_student.full_name
+          course_registration.course_id = course.course.id
+          course_registration.academic_year = @semester_registration.academic_calendar.calender_year_in_gc
+          course_registration.course_title = course.course.course_title
+          course_registration.semester = @semester_registration.semester
+          course_registration.year = @semester_registration.year
+          course_registration.created_by = current_student.id
+          if params[:course_add] == 'approved'
+            course_registration.add_course_id = course.id
+            course_registration.enrollment_status = 'enrolled'
+          end
+        end.tap do |course_registration|
+          course.update(status: :taken) if course_registration.persisted?
+        end
       end
 
       redirect_to root_path, notice: 'Courses were successfully added to your registration.'
