@@ -46,10 +46,10 @@ class SemesterRegistration < ApplicationRecord
         report.academic_calendar_id = academic_calendar.id
         report.program_id = program.id
         report.department_id = program.department.id
-        report.admission_type = student.admission_type
-        report.study_level = student.study_level
-        report.semester = student.semester
-        report.year = student.year
+        report.admission_type = admission_type
+        report.study_level = study_level
+        report.semester = semester
+        report.year = year
         # report.dean_approval = 'pending'
         # report.department_approval = 'pending'
         # report.registrar_approval = 'pending'
