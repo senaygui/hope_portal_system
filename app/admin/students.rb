@@ -923,8 +923,12 @@ ActiveAdmin.register Student do
             column :ects
             column :semester
             column :year
-            column :letter_grade
-            column :grade_point
+            column :letter_grade do |cr|
+              student.student_grades.where(course_id: cr.course_id).last&.letter_grade
+            end
+            column :grade_point do |cr|
+              student.student_grades.where(course_id: cr.course_id).last&.grade_point
+            end
           end
         end
       end
