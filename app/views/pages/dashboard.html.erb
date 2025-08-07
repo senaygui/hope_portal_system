@@ -168,9 +168,13 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <p class="text-center">
-              <strong class="text-danger">Your account is inactive due to Academic Dismissal/Academic Suspension. Please fill withdrawal and then apply for readmission.</strong>
-            </p>
+            <% if current_student.account_status == 'active' %>
+              <%= link_to "Enroll Courses for year #{current_student.year}, semester #{current_student.semester}", enrollement_path, class: "btn btn-success" %>
+            <% elsif current_student.account_status == 'suspended' && current_student.graduation_status == 'pending'%>
+              <p class="text-danger">Your account is inactive due to Academic Dismissal/Academic Suspension. Please fill withdrawal and then apply for readmission.</p>
+            <% elsif current_student.account_status == 'inactive' && current_student.graduation_status == 'approved'%> 
+            <p class="text-success">Congratulations! Finishing your courses is a huge accomplishment, and We wish you a very happy graduation.</p>
+            <% end %>
           </div>
           <!-- /.card-body -->
         </div>

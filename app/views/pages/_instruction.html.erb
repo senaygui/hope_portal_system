@@ -79,8 +79,10 @@
           <div class="card-footer">
             <% if current_student.account_status == 'active' %>
               <%= link_to "Enroll Courses for year #{current_student.year}, semester #{current_student.semester}", enrollement_path, class: "btn btn-success" %>
-            <% else %>
+            <% elsif current_student.account_status == 'suspended' && current_student.graduation_status == 'pending'%>
               <p class="text-danger">Your account is inactive due to Academic Dismissal/Academic Suspension. Please fill withdrawal and then apply for readmission.</p>
+            <% elsif current_student.account_status == 'suspended' && current_student.graduation_status == 'approved'%> 
+            <p class="text-success">Congratulations! Finishing your courses is a huge accomplishment, and We wish you a very happy graduation.</p>
             <% end %>
           </div>
         </div>

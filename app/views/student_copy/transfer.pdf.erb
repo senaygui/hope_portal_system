@@ -196,6 +196,13 @@
         </tr>
       <% end %>
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2" style="text-align: right; font-weight: bold;">Total Exempted Credit Hour</td>
+        <td style="font-weight: bold;"><%= @course_exemptions.joins(:course).sum('courses.credit_hour') %></td>
+        <td></td>
+      </tr>
+    </tfoot>
   </table>
 <% end %>
 
@@ -235,6 +242,9 @@
             <td colspan="2">CGPA <%= sem.cgpa %></td>
             <td colspan="2"><%= sem.cumulative_total_credit_hour %></td>
             <td><%= sem.cumulative_total_grade_point %></td>
+          </tr>
+          <tr>
+            <td colspan="2">Major CGPA <%= @major_cgpa %></td>
           </tr>
         </tbody>
       </table>
