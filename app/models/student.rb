@@ -136,7 +136,7 @@ class Student < ApplicationRecord
   end
 
   def determine_semester
-    semester = case admission_date.month
+    semester = case created_at.month
                when 1..9
                  1
                  # when 3..6

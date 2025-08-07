@@ -3,7 +3,7 @@ class SemesterRegistration < ApplicationRecord
   after_save :assign_section_to_course_registration
   after_commit :semester_course_registration, on: :create
   after_save :generate_invoice
-  after_save :add_admission_date
+  after_create :add_admission_date
   scope :recently_added, -> { where('created_at >= ?', 1.week.ago) }
   scope :undergraduate, -> { where(study_level: 'undergraduate') }
   scope :graduate, -> { where(study_level: 'graduate') }
@@ -192,7 +192,7 @@ class SemesterRegistration < ApplicationRecord
   private
 
   def add_admission_date
-    student.update(admission_date: Date.current) if semester == 1 && year == 1
+    student.update(admission_date: Date.current)
   end
 
   def generate_invoice
