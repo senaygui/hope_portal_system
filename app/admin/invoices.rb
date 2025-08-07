@@ -1,5 +1,5 @@
 ActiveAdmin.register Invoice, as: 'RegistrationPayment' do
-  menu parent: 'Student Payments'
+  menu parent: 'Student Payments', label: 'Student Tution Payment'
   actions :all, except: [:new]
   config.clear_action_items!
   permit_params :student_full_name, :student_id_number, :student_id, :department_id, :program_id, :academic_calendar_id,

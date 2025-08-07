@@ -130,11 +130,8 @@
           <!-- /.card-header -->
           <div class="card-body">
             <div class="card-body">
-              <strong class="text-success">You have been Approved. Click the button to go to learning platfrom.</strong>
+              <strong class="text-success">Your payment transfer has been Approved. You can go to campus and start learning</strong>
             </div>
-          </div>
-          <div class="card-footer">
-            <%= link_to "Go to Learning Platfrom", "https://lms.heuc.edu.et", class: "btn btn-success"%>
           </div>
         </div>
       </div>
@@ -316,15 +313,14 @@
             <!-- /.card-header -->
             <div class="card-body">
               <div class="card-body">
-                <strong class="text-success">Your payment transfer has been Approved. Click the button to go to learning platfrom.</strong>
+                <strong class="text-success">Your payment transfer has been Approved. You can go to campus and start learning</strong>
               </div>
-            </div>
-            <div class="card-footer">
-              <%= link_to "Go to Learning Platfrom", "https://lms.heuc.edu.et", class: "btn btn-success"%>
             </div>
           </div>
         </div>
-        <%= render 'student_id'%>
+        <%if current_student.admission_type == "online"%>
+          <%= render 'student_id'%>
+        <%end%>
       <%elsif current_student.invoices.last.payment_transaction.finance_approval_status == "denied"%>
         <div class="col-12">
           <div class="card card-outline card-danger instruction-card">

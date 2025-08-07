@@ -123,7 +123,7 @@ class Ability
       can :manage, Section
       can :manage, Almuni
       can :manage, Withdrawal
-      can :manage, AddAndDrop
+      # can :manage, AddAndDrop
       can %i[read update destroy], Dropcourse
       can %i[read update destroy], AddCourse
       # can :manage, Assessment
