@@ -8,6 +8,8 @@ ActiveAdmin.register_page 'InstructorReport' do
 
   content do
     tabs do
+      
+
       tab 'Instructor statistics ' do
         div style: 'margin-bottom: 20px; text-align: right;' do
           link_to 'Download Instructor Report (CSV)',
@@ -209,6 +211,98 @@ ActiveAdmin.register_page 'InstructorReport' do
 
           div do
             text_node table_html.html_safe
+          end
+        end
+      end
+      tab 'Instructor Grade Submission Report' do
+        panel 'Instructor Grade Submission Report' do
+          # Filters for Academic Calendar, Year, and Semester
+          f_params = params.permit(:academic_calendar_id, :year, :semester)
+          form action: request.path, method: :get do
+            div style: 'display: flex; gap: 20px; margin-bottom: 20px;' do
+              div do
+                label 'Academic Calendar'
+                select name: 'academic_calendar_id', onchange: 'this.form.submit()' do
+                  options_for_select(AcademicCalendar.all.map { |ac| [ac.calender_year_in_gc, ac.id] }, f_params[:academic_calendar_id])
+                end
+              end
+              div do
+                label 'Year'
+                select name: 'year', onchange: 'this.form.submit()' do
+                  options_for_select((1..5).to_a, f_params[:year])
+                end
+              end
+              div do
+                label 'Semester'
+                select name: 'semester', onchange: 'this.form.submit()' do
+                  options_for_select((1..3).to_a, f_params[:semester])
+                end
+              end
+            end
+          end
+
+          # Fetch and display data
+          instructors_courses = CourseInstructor.includes(:admin_user, :course, :section, :academic_calendar)
+          if f_params[:academic_calendar_id].present?
+            instructors_courses = instructors_courses.where(academic_calendar_id: f_params[:academic_calendar_id])
+          end
+          if f_params[:year].present?
+            instructors_courses = instructors_courses.where(year: f_params[:year])
+          end
+          if f_params[:semester].present?
+            instructors_courses = instructors_courses.where(semester: f_params[:semester])
+          end
+
+          processed_courses = instructors_courses.map do |ci|
+            registrations = CourseRegistration.where(course_id: ci.course_id, section_id: ci.section_id)
+            total_students = registrations.count
+            grades_submitted = registrations.joins(:student_grade).where(student_grades: { instructor_submit_status: 'Submitted' }).count
+            unsubmitted_grades = total_students - grades_submitted
+
+            status =
+              if total_students.zero?
+                'No Students'
+              elsif grades_submitted == total_students
+                'Submitted'
+              elsif grades_submitted.positive?
+                'Partially Submitted'
+              else
+                'Not Submitted'
+              end
+
+            OpenStruct.new(
+              instructor: ci.admin_user.full_name,
+              course: ci.course.course_title,
+              section: ci.section.section_full_name,
+              academic_year: ci.academic_calendar.calender_year_in_gc,
+              semester: ci.semester,
+              total_students: total_students,
+              grades_submitted: grades_submitted,
+              unsubmitted_grades: unsubmitted_grades,
+              status: status
+            )
+          end
+
+          table_for processed_courses do
+            column :instructor
+            column :course
+            column :section
+            column :academic_year
+            column :semester
+            column :total_students
+            column :grades_submitted
+            column :unsubmitted_grades
+            column :status do |s|
+              status_class = case s.status
+                             when 'Submitted'
+                               'ok'
+                             when 'Partially Submitted'
+                               'warning'
+                             else
+                               'error'
+                             end
+              status_tag s.status, class: status_class
+            end
           end
         end
       end

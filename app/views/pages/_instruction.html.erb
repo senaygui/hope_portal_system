@@ -179,7 +179,16 @@
           <!-- /.card-header -->
           <div class="card-body">
             <p class="text-center">
-              <strong class="text-blue">Your account has not been approved yet. Wait until the registrar approves your account. Until then you can update your informations and documents.</strong>
+              <%if current_student.institution_transfer_status.nil?%>
+                <strong class="text-blue">Welcome "<%=current_student.first_name %>"! Your account has not been approved yet. Wait until the registrar approves your account. Until then you can update your informations and documents.</strong> 
+              <%elsif current_student.institution_transfer_status == "pending"%>
+                <strong class="text-red">Welcome "<%=current_student.first_name %>"! Wait Until Institution Transfer Request Approved.</strong>
+              <% elsif current_student.institution_transfer_status == "approved" %>
+                <strong class="text-success">Welcome "<%=current_student.first_name %>"! The Transfer you requested have been approved. Wait until the registrar approves your account. Until then you can update your informations and documents.</strong> 
+              <% elsif current_student.institution_transfer_status == "denied" %>
+                <strong class="text-red">Welcome "<%=current_student.first_name %>"! The Transfer you requested have been denied. Please contact the office.</strong> 
+              <%end%> 
+              
             </p>
           </div>
           <!-- /.card-body -->

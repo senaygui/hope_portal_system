@@ -239,7 +239,7 @@
 <!-- HERO BANNER -->
 <div class="hero-banner">
   <span class="hero-icon" data-feather="user-plus"></span>
-  <h1>Transfer StudentAdmission Portal</h1>
+  <h1>Transfer Student Admission Portal</h1>
   <p>Start your journey with us. Choose your preferred study level and modality below!</p>
 </div>
 
@@ -247,7 +247,7 @@
   <div class="container-fluid">
     <div class="row gx-5 gy-4">
       <!-- Main Admission Content -->
-      <div class="col-lg-9 col-md-8">
+      <div class="col-lg-12 col-md-12">
         <div class="card card-primary">
           <div class="card-header">
             <h3 class="card-title">
@@ -260,7 +260,7 @@
             <h2>In What Study Level And Modality Do You Want To Enroll?</h2>
             <div class="row justify-content-center gx-4 gy-4">
               <div class="col-lg-4 col-md-6 mb-4">
-                <%= link_to new_student_registration_path(modality: "regular", study_level: "undergraduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
+                <%= link_to new_student_registration_path(modality: "regular", study_level: "undergraduate", institution_transfer_status: "pending"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
                   <div class="icon-box icon-box-regular-degree" tabindex="0">
                     <span class="icon" data-feather="book-open"></span>
                     <h4>Regular Degree</h4>
@@ -269,7 +269,7 @@
                 <% end %>
               </div>
               <div class="col-lg-4 col-md-6 mb-4">
-                <%= link_to new_student_registration_path(modality: "extention", study_level: "undergraduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
+                <%= link_to new_student_registration_path(modality: "extention", study_level: "undergraduate", institution_transfer_status: "pending"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
                   <div class="icon-box icon-box-extension-degree" tabindex="0">
                     <span class="icon" data-feather="clock"></span>
                     <h4>Extension Degree</h4>
@@ -278,7 +278,7 @@
                 <% end %>
               </div>
               <div class="col-lg-4 col-md-6 mb-4">
-                <%= link_to new_student_registration_path(modality: "regular", study_level: "graduate"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
+                <%= link_to new_student_registration_path(modality: "regular", study_level: "graduate", institution_transfer_status: "pending"), 'data-no-turbolink' => false, class: 'icon-box-link' do %>
                   <div class="icon-box icon-box-regular-masters" tabindex="0">
                     <span class="icon" data-feather="award"></span>
                     <h4>Regular Masters</h4>
@@ -289,53 +289,6 @@
             </div>
           </div>
           <!-- /.card-body -->
-        </div>
-      </div>
-      <!-- Alumni Services Sidebar -->
-      <div class="col-lg-3 col-md-4">
-        <div class="card" style="position:sticky;top:30px;">
-          <div class="card-header" style="background:#077b3f;color:#fff;">
-            <h4 class="mb-0">Alumni Services</h4>
-          </div>
-          <div class="card-body p-0">
-            <ul class="list-group list-group-flush alumni-sidebar-list">
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="file-text"></span>
-                <%= link_to 'Official Transcript', new_document_request_path(document_type: 'Official Transcript') %>
-              </li>
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="award"></span>
-                <%= link_to 'Original Degree', new_document_request_path(document_type: 'Original Degree') %>
-              </li>
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="file"></span>
-                <%= link_to 'Temporary Certificate', new_document_request_path(document_type: 'Temporary Certificate') %>
-              </li>
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="copy"></span>
-                <%= link_to 'Student Copy', new_document_request_path(document_type: 'Student Copy') %>
-              </li>
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="user"></span>
-                <%= link_to 'To Whom It May Concern', new_document_request_path(document_type: 'To Whom It May Concern') %>
-              </li>
-              <li class="list-group-item">
-                <span class="sidebar-icon" data-feather="search"></span>
-                <%= link_to 'Track Your Request', track_form_document_requests_path(document_type: 'Track Request') %>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="card mt-4" style="position:sticky;top:30px;">
-          <div class="card-header" style="background:#077b3f;color:#fff;">
-            <h4 class="mb-0">Other Services</h4>
-          </div>
-          <ul class="list-group list-group-flush alumni-sidebar-list">
-            <li class="list-group-item">
-              <span class="sidebar-icon" data-feather="repeat"></span>
-              <%= link_to 'Apply for Transfer', transfer_student_path(institution_transfer_status: "pending") %>
-            </li>
-          </ul>
         </div>
       </div>
     </div>

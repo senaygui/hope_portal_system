@@ -4,7 +4,10 @@
 
 <style>
   body {
-    background-color: #f4f7fc;
+    background-image: linear-gradient(rgba(244, 247, 252, 0.1), rgba(244, 247, 252, 0.1)), url(<%= image_url('sign-in.jpg') %>);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     font-family: 'Raleway', sans-serif;
   }
 
@@ -99,7 +102,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbolinks:load', function() {
     feather.replace();
   });
 </script>

@@ -14,9 +14,13 @@ class PagesController < ApplicationController
 
   def requirement; end
 
+  def transfer_student
+    @transfer_student = params[:institution_transfer_status]
+  end
+
   def profile
     @address = current_student.student_address
-    @emergency_contact = current_student.emergency_contact
+    @emergency_contact = current_tudent.emergency_contact
   end
 
   def dashboard
@@ -38,7 +42,8 @@ class PagesController < ApplicationController
 
   def enrollement
     @total_course = current_student.get_current_courses.select do |course|
-      passed_all_prerequisites?(current_student, course)
+      passed_all_prerequisites?(current_student, course) &&
+        !current_student.course_exemptions.where(exemption_approval: 'Approved').exists?(course_id: course.id)
     end
     # @total_course = current_student.get_current_courses
     @registration_fee = current_student.get_registration_fee

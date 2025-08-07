@@ -265,6 +265,7 @@ Rails.application.routes.draw do
 
   post 'prepare_pdf', to: 'pdf_grade_reports#prepare_pdf', as: 'prepare_pdf'
   get 'admission' => 'pages#admission'
+  get 'transfer_student' => 'pages#transfer_student', as: 'transfer_student'
   get 'documents' => 'pages#documents', as: 'documents'
   get 'profile' => 'pages#profile', as: 'profile'
   get 'grade_report' => 'pages#grade_report'

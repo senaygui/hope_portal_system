@@ -32,6 +32,7 @@ class StudentCopyController < ApplicationController
     def show
       @student = Student.find_by(id: params[:id])
       @semesters = @student.grade_reports.order(:year, :semester)
+      @course_exemptions = @student.course_exemptions.where(exemption_approval: 'Approved')
       total_credit_hours = Curriculum.where(curriculum_version: @student.curriculum_version).last&.total_credit_hour
       total_grade_points = @semesters.sum(&:total_grade_point)
       @total_cumulative_gpa = (total_credit_hours / total_grade_points.to_f).round(2)
@@ -39,9 +40,15 @@ class StudentCopyController < ApplicationController
       respond_to do |format|
         format.html
         format.pdf do
-          render pdf: "student_copy_#{@student.first_name}",
+          if @student.institution_transfer_status.nil?
+            render pdf: "student_copy_#{@student.first_name}",
                  template: 'student_copy/show',
                  layout: 'pdf'
+          elsif @student.institution_transfer_status == 'approved'
+            render pdf: "student_copy_#{@student.first_name}",
+                   template: 'student_copy/transfer',
+                   layout: 'pdf'
+          end
         end
       end
     end

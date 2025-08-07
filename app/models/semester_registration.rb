@@ -132,8 +132,12 @@ class SemesterRegistration < ApplicationRecord
           # report.total_grade_point = self.course_registrations.where(enrollment_status: "enrolled").collect { |oi|
           # (!!(oi.student_grade&.letter_grade != "I") && oi.student_grade.present? && !!(oi.student_grade&.letter_grade != "NG")) ? (oi.course.credit_hour * oi.student_grade.grade_point) : 0}.sum
           report.sgpa = report.total_credit_hour == 0 ? 0 : (report.total_grade_point / report.total_credit_hour).round(2)
-          dedcated_credit_hour = course_registrations.joins(:student_grade).where(enrollment_status: 'enrolled').where.not(add_course_id: nil).where.not(student_grades: { letter_grade: ['NG', 'I'] }).map { |course| course.course.credit_hour }.sum || 0
-          
+          dedcated_credit_hour = course_registrations.joins(:student_grade).where(enrollment_status: 'enrolled').where.not(add_course_id: nil).where.not(student_grades: { letter_grade: %w[
+                                                                                                                                                           NG I
+                                                                                                                                                         ] }).map do |course|
+            course.course.credit_hour
+          end.sum || 0
+
           report.cumulative_total_credit_hour = (student.grade_reports.order('created_at DESC').first.cumulative_total_credit_hour + report.total_credit_hour) - dedcated_credit_hour
           report.cumulative_total_grade_point = student.grade_reports.order('created_at DESC').first.cumulative_total_grade_point + report.total_grade_point
           report.cgpa = (report.cumulative_total_grade_point / report.cumulative_total_credit_hour).round(2)
@@ -233,10 +237,10 @@ class SemesterRegistration < ApplicationRecord
       courses_to_register = out_of_batch? ? student.get_added_course : student.get_current_courses
 
       # Filter out exempted courses for external transfer students
-      # if student.is_a?(ExternalTransfer) && student.course_exemptions.any?
-      #   exempted_course_ids = student.course_exemptions.pluck(:course_id)
-      #   courses_to_register = courses_to_register.reject { |course| exempted_course_ids.include?(course.id) }
-      # end
+      if student.institution_transfer_status == 'Approved' && student.course_exemptions.where(exemption_approval: 'Approved').any?
+        exempted_course_ids = student.course_exemptions.where(exemption_approval: 'Approved').pluck(:course_id)
+        courses_to_register = courses_to_register.reject { |course| exempted_course_ids.include?(course.id) }
+      end
 
       courses_to_register.each do |course|
         course_registration = CourseRegistration.new(

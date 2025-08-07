@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
 
     devise_parameter_sanitizer.permit(:sign_up) do |student_params|
       student_params.permit(
-        :batch, :nationality, :undergraduate_transcript, :highschool_transcript, :grade_10_matric,
+        :batch, :nationality, :institution_transfer_status, :undergraduate_transcript, :student_copy, :highschool_transcript, :grade_10_matric,
         :grade_12_matric, :coc, :diploma_certificate, :degree_certificate, :place_of_birth,
         :sponsorship_status, :entrance_exam_result_status, :student_id_taken_status, :old_id_number,
         :curriculum_version, :current_occupation, :tempo_status, :created_by, :last_updated_by, :photo,

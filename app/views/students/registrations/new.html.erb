@@ -325,9 +325,12 @@
                       </div>
                     </div>
                     <%= f.input :created_by, as: :hidden, :input_html => { :value => "self"}%>
-                    <%=f.input :year, as: :hidden, :input_html => { :value => 1}%>
-                    <%=f.input :semester, as: :hidden, :input_html => { :value => 1}%>
-
+                    <% if !params[:institution_transfer_status].present? %>
+                      <%=f.input :year, as: :hidden, :input_html => { :value => 1}%>
+                      <%=f.input :semester, as: :hidden, :input_html => { :value => 1}%>
+                    <% else %>
+                      <%=f.input :institution_transfer_status, as: :hidden, :input_html => { :value => params[:institution_transfer_status]}%>
+                    <% end %>
                   
                 </div>
               </div>

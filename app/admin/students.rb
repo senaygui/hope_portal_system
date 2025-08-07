@@ -144,6 +144,10 @@ ActiveAdmin.register Student do
       update_method = attributes.first[:password].present? ? :update : :update_without_password
       object.send(update_method, *attributes)
     end
+
+    def scoped_collection
+      super.where(institution_transfer_status: ['approved', nil])
+    end
   end
 
   def scoped_collection

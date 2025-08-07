@@ -37,6 +37,9 @@ class Student < ApplicationRecord
   has_one_attached :degree_certificate, dependent: :destroy
   has_one_attached :undergraduate_transcript, dependent: :destroy
   has_one_attached :photo, dependent: :destroy
+  has_one_attached :student_copy, dependent: :destroy
+  has_many :course_exemptions, as: :exemptible, dependent: :destroy
+    accepts_nested_attributes_for :course_exemptions, reject_if: :all_blank, allow_destroy: true
   has_many :student_grades, dependent: :destroy
   has_many :grade_reports
   has_many :course_registrations
@@ -87,7 +90,8 @@ class Student < ApplicationRecord
 
     # Filter out courses where the student hasn't met the prerequisites
     all_courses.select do |course|
-      passed_all_prerequisites?(self, course)
+      passed_all_prerequisites?(self, course) &&
+        !course_exemptions.where(exemption_approval: 'Approved').exists?(course_id: course.id)
     end
   end
 

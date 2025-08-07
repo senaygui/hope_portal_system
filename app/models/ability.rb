@@ -188,7 +188,7 @@ class Ability
       can :manage, ActiveAdmin::Page, name: 'OnlineStudentGrade', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'AssignSection', namespace_name: 'admin'
       can :manage, AcademicCalendar
-      can :manage, AdminUser, role: 'registrar head'
+      # can :manage, AdminUser, role: 'registrar head'
       can %i[read update], Exemption # , dean_approval_status: 'dean_approval_approved'
       can :manage, Faculty
       can :read, CourseModule
@@ -221,7 +221,7 @@ class Ability
     when 'data encoder'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :manage, AcademicCalendar
-      can :manage, AdminUser, role: 'instructor'
+      # can :manage, AdminUser, role: 'instructor'
       can :manage, Faculty
       can :manage, Department
       can :read, CourseModule
@@ -247,8 +247,8 @@ class Ability
       can :manage, Withdrawal
       can :destroy, Withdrawal, created_by: user.name.full
 
-      can :manage, AddAndDrop
-      cannot :destroy, AddAndDrop, created_by: 'self'
+      # can :manage, AddAndDrop
+      # cannot :destroy, AddAndDrop, created_by: 'self'
 
     when 'distance_registrar'
       can :manage, CourseSection
@@ -409,8 +409,8 @@ class Ability
       can :manage, ProgramExemption # , department_id: user.department.id
       can :manage, Course, program: { department_id: user.department.id }
       can :create, Course
-      can :manage, AdminUser, role: 'instructor'
-      can :create, AdminUser
+      # can :manage, AdminUser, role: 'instructor'
+      # can :create, AdminUser
       # can :manage, Assessment, student: { department_id: user.department_id }
       can %i[read update destroy], Program, department_id: user.department.id
       can :create, Program

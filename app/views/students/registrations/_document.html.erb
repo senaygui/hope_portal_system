@@ -19,6 +19,11 @@
       <%= f.input :degree_certificate, as: :file, label: "Undergraduate degree certificate",class: 'form-control'%>
     </div>
   <%end%>
+  <%if params[:institution_transfer_status].present? %>
+    <div class="col-12 col-md-6 form-group">
+      <%= f.input :student_copy, as: :file, label: "Student copy(Transcript)",class: 'form-control'%>
+    </div>
+  <%end%>
   <!-- <div class="col-12 col-md-12 form-group">
     <strong>Declaration by the Applicant</strong>
     <p>
@@ -58,6 +63,13 @@
   }
 </style>
 <script type="text/javascript">
+  $('#student_student_copy').change(function (e) {
+      var files = [];
+      for (var i = 0; i < $(this)[0].files.length; i++) {
+          files.push($(this)[0].files[i].name);
+      }
+      $(this).next('.custom-file-label').html(files.join(', '));
+  });
   $('#student_highschool_transcript').change(function (e) {
       var files = [];
       for (var i = 0; i < $(this)[0].files.length; i++) {
