@@ -71,7 +71,8 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def check_permit
-    params.require(:student).permit(:highschool_transcript, :photo, :grade_10_matric, :grade_12_matric, :coc, :diploma_certificate, :degree_certificate, :student_copy)
+    params.require(:student).permit(:highschool_transcript, :photo, :grade_10_matric, :grade_12_matric, :coc,
+                                    :diploma_certificate, :degree_certificate, :student_copy)
   end
 
   # def configure_permitted_parameters

@@ -394,6 +394,9 @@ class Ability
       can :read, SemesterRegistration, admission_type: 'extention'
       can :manage, Invoice
     when 'department head'
+      can :read, AdminUser, role: 'department head'
+      can :read, AdminUser, role: 'instructor'
+      can :read, Student, department_id: user.department_id
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
       can :read, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'InstructorReport', namespace_name: 'admin'
