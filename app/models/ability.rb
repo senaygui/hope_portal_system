@@ -140,23 +140,13 @@ class Ability
       can :manage, AssessmentPlan, admin_user_id: user.id
       can %i[read update], MakeupExam
       can :read, CourseRegistration, course_id: Course.instructor_courses(user.id)
+      can %i[read update], StudentGrade, course_id: Section.instructors(user.id)
+      can %i[read destroy], StudentGrade, course_id: Course.instructor_courses(user.id)
       can :read, Notice
-
-      # Instructors can only manage grades for courses they are currently assigned to
-      # for the specific academic calendar, year, and semester.
-      can [:read, :update], StudentGrade do |student_grade|
-        course_registration = student_grade.course_registration
-        if course_registration
-          CourseInstructor.where(
-            admin_user_id: user.id,
-            course_id: course_registration.course_id,
-            academic_calendar_id: course_registration.academic_calendar_id,
-            year: course_registration.year,
-            semester: course_registration.semester
-          ).exists?
-        else
-          false
-        end
+      can %i[read update], StudentGrade, course_id: Course.instructor_courses(user.id).select(:id)
+      # Destroy action with a block for additional conditions
+      can :destroy, StudentGrade do |grade|
+        Course.instructor_courses(user.id).include?(grade.course_id) && grade.created_at >= 15.days.ago
       end
       can :read, Program
       # cannot :destroy, StudentGrade
