@@ -1,6 +1,7 @@
 class DropCoursesController < ApplicationController
   def index
-    @courses = CourseRegistration.where(student: current_student, enrollment_status: 'enrolled', semester: current_student.semester).includes(:course)
+    current_semester_registration = current_student.semester_registrations.find_by(semester: current_student.semester, year: current_student.year)
+    @courses = CourseRegistration.where(student: current_student, enrollment_status: 'enrolled', semester: current_student.semester, semester_registration_id: current_semester_registration).includes(:course)
     @droped_courses = Dropcourse.where(student: current_student).where.not(status: 0).includes(:course)
   end
 
