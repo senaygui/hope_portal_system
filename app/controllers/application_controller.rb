@@ -65,7 +65,8 @@ class ApplicationController < ActionController::Base
         :account_verification_status, :document_verification_status, :account_status, :graduation_status,
         student_address_attributes: student_address_attrs,
         emergency_contact_attributes: emergency_contact_attrs,
-        school_or_university_information_attributes: school_or_university_information_attrs
+        school_or_university_information_attributes: school_or_university_information_attrs,
+        course_exemptions_attributes: [:id, :course_taken, :letter_grade, :credit_hour, :_destroy]
       )
     end
 

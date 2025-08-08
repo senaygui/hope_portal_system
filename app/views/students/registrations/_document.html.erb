@@ -24,6 +24,17 @@
       <%= f.input :student_copy, as: :file, label: "Student copy(Transcript)",class: 'form-control'%>
     </div>
   <%end%>
+  <div class="col-12">
+    <h3>Course Exemptions</h3>
+    <div id="course-exemptions">
+      <%= f.fields_for :course_exemptions do |exemption_form|
+        render 'students/registrations/course_exemption_fields', f: exemption_form
+      end %>
+    </div>
+    <div class="links">
+      <%= link_to_add_association 'Add Course Exemption', f, :course_exemptions, class: 'btn btn-primary' %>
+    </div>
+  </div>
   <!-- <div class="col-12 col-md-12 form-group">
     <strong>Declaration by the Applicant</strong>
     <p>
