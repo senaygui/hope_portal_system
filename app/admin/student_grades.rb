@@ -203,16 +203,33 @@ ActiveAdmin.register StudentGrade do
           panel 'Grade information' do
             attributes_table_for student_grade do
               row 'full name', sortable: true do |n|
-                n.student.name.full
+                link_to n.student.full_name, admin_student_path(n.student.id)
               end
               row 'Student ID' do |si|
                 si.student.student_id
               end
-              row 'Course title' do |si|
-                si.course.course_title
-              end
               row 'Program' do |pr|
                 link_to pr.student.program.program_name, admin_program_path(pr.student.program.id)
+              end
+              row 'Section' do |si|
+                link_to si.course_registration.section.section_name,
+                        admin_section_path(si.course_registration.section.id)
+              end
+              row 'Academic Calendar' do |si|
+                link_to si.course_registration.academic_calendar.academic_calendar_name,
+                        admin_academic_calendar_path(si.course_registration.academic_calendar.id)
+              end
+              row 'Semester' do |si|
+                si.course_registration.semester
+              end
+              row 'Year' do |si|
+                si.course_registration.year
+              end
+              row 'Course title' do |si|
+                link_to si.course.course_title, admin_course_path(si.course.id)
+              end
+              row 'Course code' do |si|
+                si.course.course_code
               end
               row :letter_grade
               row :grade_point
@@ -220,6 +237,7 @@ ActiveAdmin.register StudentGrade do
               row :dean_approval_status do |c|
                 status_tag c.dean_approval_status
               end
+              row :dean_head_name
               row :department_approval do |c|
                 status_tag c.department_approval
               end
