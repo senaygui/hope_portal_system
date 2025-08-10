@@ -212,7 +212,7 @@ ActiveAdmin.register StudentGrade do
                 link_to pr.student.program.program_name, admin_program_path(pr.student.program.id)
               end
               row 'Section' do |si|
-                link_to si.course_registration.section.section_name,
+                link_to si.course_registration.section.section_full_name,
                         admin_section_path(si.course_registration.section.id)
               end
               row 'Academic Calendar' do |si|
@@ -234,6 +234,10 @@ ActiveAdmin.register StudentGrade do
               row :letter_grade
               row :grade_point
               row :assesment_total
+              row :instructor_submit_status do |c|
+                status_tag c.instructor_submit_status
+              end
+              row :instructor_name
               row :dean_approval_status do |c|
                 status_tag c.dean_approval_status
               end
