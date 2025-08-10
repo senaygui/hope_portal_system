@@ -327,7 +327,25 @@ ActiveAdmin.register Student, as: 'ExternalTransferStudent' do
       f.has_many :course_exemptions, heading: ' ', remote: true, allow_destroy: true, new_record: true do |a|
             a.input :course_id, as: :search_select, url: admin_courses_path,
                                 fields: %i[course_title id], display_name: 'course_title', minimum_input_length: 2,
-                                order_by: 'id_asc'
+                                order_by: 'id_asc', 
+                                input_html: {
+                                  data: {
+                                    ajax_search_select: {
+                                      ajax: {
+                                        url: admin_courses_path,
+                                        data: ->( term, page ) {
+                                          { 
+                                            q: { 
+                                              course_title_cont: term,
+                                              program_id_eq: f.object.program_id
+                                            },
+                                            page: page
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
             a.input :letter_grade
             a.input :credit_hour
             a.input :course_taken

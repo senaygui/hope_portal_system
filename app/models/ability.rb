@@ -64,6 +64,7 @@ class Ability
     when 'admin'
       # can :manage, ActiveAdmin::Page, name: "Calendar", namespace_name: "admin"
       can %i[read update], UneditableCurriculum, created_at: (5.days.ago..)
+      can :manage, Dropcourse
       can :manage, Transfer
       can :manage, DocumentRequest
       can :manage, RecurringPayment

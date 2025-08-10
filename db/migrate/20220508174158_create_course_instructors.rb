@@ -1,6 +1,6 @@
 class CreateCourseInstructors < ActiveRecord::Migration[5.2]
   def change
-    create_table :course_instructors do |t|
+    create_table :course_instructors, id: :uuid do |t|
       t.belongs_to :admin_user, index: true, type: :uuid
       t.belongs_to :course, index: true, type: :uuid
       t.belongs_to :academic_calendar, index: true, type: :uuid

@@ -393,7 +393,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_09_082026) do
     t.index ["exemptible_type", "exemptible_id"], name: "index_course_exemptions_on_exemptible_type_and_exemptible_id"
   end
 
-  create_table "course_instructors", force: :cascade do |t|
+  create_table "course_instructors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "admin_user_id"
     t.uuid "course_id"
     t.uuid "academic_calendar_id"
