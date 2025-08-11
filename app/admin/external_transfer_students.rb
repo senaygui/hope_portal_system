@@ -325,11 +325,8 @@ ActiveAdmin.register Student, as: 'ExternalTransferStudent' do
     end
     panel 'course exemptions' do
       f.has_many :course_exemptions, heading: ' ', remote: true, allow_destroy: true, new_record: true do |a|
-        a.input :course_id, as: :search_select,
-                            url: proc { admin_program_courses_path(program_id: f.object.program.id) },
-                            fields: %i[course_title id],
-                            display_name: 'course_title',
-                            minimum_input_length: 2,
+        a.input :course_id, as: :search_select, url: proc { admin_courses_path },
+                            fields: %i[course_title id], display_name: 'course_title', minimum_input_length: 2,
                             order_by: 'created_at_asc'
         a.input :letter_grade
         a.input :credit_hour

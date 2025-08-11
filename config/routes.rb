@@ -263,16 +263,6 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :admin do
-    resources :programs do
-      # This creates a route like /admin/programs/:program_id/courses
-      resources :courses, only: [:index]
-    end
-  
-    # Keep your original courses route if it's used elsewhere
-    resources :courses
-  end
-  
   post 'prepare_pdf', to: 'pdf_grade_reports#prepare_pdf', as: 'prepare_pdf'
   get 'admission' => 'pages#admission'
   get 'transfer_student' => 'pages#transfer_student', as: 'transfer_student'
