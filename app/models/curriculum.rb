@@ -1,7 +1,8 @@
 class Curriculum < ApplicationRecord
 
 	##validations
-     validates :curriculum_title, :presence => true
+   validates :curriculum_title, :presence => true, uniqueness: true
+	 validates :batch, :presence => true
 	 validates :curriculum_version, :presence => true, uniqueness: true
 	 validates :curriculum_active_date, :presence => true
 	##associations

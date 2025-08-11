@@ -1,6 +1,6 @@
 class Department < ApplicationRecord
   ##validations
-    validates :department_name , :presence => true,:length => { :within => 2..200 }
+    validates :department_name , :presence => true,:length => { :within => 2..200 }, uniqueness: true
   ##associations
     has_many :students
     belongs_to :faculty

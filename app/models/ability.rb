@@ -103,7 +103,7 @@ class Ability
       can :manage, ActiveAdmin::Page, name: 'StudentStats', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Graduation', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'AssignSection', namespace_name: 'admin'
-
+      can :manage, ActiveAdmin::Page, name: 'BulkAssessments', namespace_name: 'admin'
       can :manage, Program
       can :manage, College
       can :manage, Faculty
@@ -134,6 +134,7 @@ class Ability
       can :manage, Notice
 
     when 'instructor'
+      can :manage, ActiveAdmin::Page, name: 'BulkAssessments', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
       can :read, AcademicCalendar
       can :read, Course, id: Course.instructor_courses(user.id)

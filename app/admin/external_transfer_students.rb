@@ -283,7 +283,7 @@ ActiveAdmin.register Student, as: 'ExternalTransferStudent' do
     f.semantic_errors(*f.object.errors.attribute_names)
     # if f.object.errors.key?
     # if f.object.new_record? || current_admin_user.role == "registrar head"
-    if current_admin_user.role == 'registrar head' || current_admin_user.role == "admin"
+    if current_admin_user.role == 'registrar head' || current_admin_user.role == 'admin'
       f.inputs 'Student basic information' do
         f.input :semester
         f.input :year
@@ -307,7 +307,7 @@ ActiveAdmin.register Student, as: 'ExternalTransferStudent' do
         end
       end
     end
-    if current_admin_user.role == 'registrar head' || current_admin_user.role == "admin"
+    if current_admin_user.role == 'registrar head' || current_admin_user.role == 'admin'
       f.inputs 'Student account and document verification' do
         f.input :account_verification_status, as: :select, collection: %w[pending approved denied incomplete],
                                               include_blank: false
@@ -325,32 +325,17 @@ ActiveAdmin.register Student, as: 'ExternalTransferStudent' do
     end
     panel 'course exemptions' do
       f.has_many :course_exemptions, heading: ' ', remote: true, allow_destroy: true, new_record: true do |a|
-            a.input :course_id, as: :search_select, url: admin_courses_path,
-                                fields: %i[course_title id], display_name: 'course_title', minimum_input_length: 2,
-                                order_by: 'id_asc', 
-                                input_html: {
-                                  data: {
-                                    ajax_search_select: {
-                                      ajax: {
-                                        url: admin_courses_path,
-                                        data: ->( term, page ) {
-                                          { 
-                                            q: { 
-                                              course_title_cont: term,
-                                              program_id_eq: f.object.program_id
-                                            },
-                                            page: page
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-            a.input :letter_grade
-            a.input :credit_hour
-            a.input :course_taken
-            a.input :exemption_approval, as: :select, collection: %w[Pending Approved Rejected]
-            a.label :_destroy
+        a.input :course_id, as: :search_select,
+                            url: proc { admin_program_courses_path(program_id: f.object.program.id) },
+                            fields: %i[course_title id],
+                            display_name: 'course_title',
+                            minimum_input_length: 2,
+                            order_by: 'created_at_asc'
+        a.input :letter_grade
+        a.input :credit_hour
+        a.input :course_taken
+        a.input :exemption_approval, as: :select, collection: %w[Pending Approved Rejected]
+        a.label :_destroy
       end
     end
     f.actions

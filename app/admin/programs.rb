@@ -1,7 +1,7 @@
 ActiveAdmin.register Program do
   menu parent: 'Program', label: 'Program Modality'
   permit_params :entrance_exam_requirement_status, :program_semester, :department_id, :total_semester, :program_name,
-                :program_code, :overview, :program_description, :created_by, :last_updated_by, :total_tuition, :study_level, :admission_type, :program_duration, curriculums_attributes: %i[id curriculum_title curriculum_version total_course total_ects total_credit_hour active_status curriculum_active_date depreciation_date created_by last_updated_by _destroy]
+                :program_code, :overview, :program_description, :created_by, :last_updated_by, :total_tuition, :study_level, :admission_type, :program_duration, curriculums_attributes: %i[id curriculum_title curriculum_version total_course total_ects total_credit_hour batch active_status curriculum_active_date depreciation_date created_by last_updated_by _destroy]
   active_admin_import
 
   index do
@@ -85,6 +85,19 @@ ActiveAdmin.register Program do
       f.has_many :curriculums, heading: ' ', remote: true, allow_destroy: true, new_record: true do |a|
           a.input :curriculum_title
           a.input :curriculum_version
+          a.input :batch, as: :select, collection: [
+                '2019/2020',
+                '2020/2021',
+                '2021/2022',
+                '2022/2023',
+                '2023/2024',
+                '2024/2025',
+                '2025/2026',
+                '2026/2027',
+                '2027/2028',
+                '2028/2029',
+                '2029/2030'
+              ], include_blank: false
           a.input :total_course
           a.input :total_ects
           a.input :total_credit_hour
@@ -149,6 +162,7 @@ ActiveAdmin.register Program do
               column 'curriculum version' do |item|
                 item.curriculum_version
               end
+              column :batch
               column 'total course' do |item|
                 item.total_course
               end

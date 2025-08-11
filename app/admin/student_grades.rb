@@ -3,6 +3,26 @@ ActiveAdmin.register StudentGrade do
     permit_params :dean_approval_status, :instructor_submit_status, :instructor_name, :dean_head_name, :department_approval, :department_head_name, :department_head_date_of_response, :course_registration_id,
                   :student_id, :letter_grade, :grade_point, :assesment_total, :grade_point, :course_id, assessments_attributes: %i[id student_grade_id assessment_plan_id student_id course_id result created_by updated_by _destroy]
 
+     # controller do
+     #   def update
+     #     super do |success, _failure|
+     #       if success
+     #         next_record = StudentGrade
+     #                         .where(instructor_submit_status: 'not_submitted')
+     #                         .where.not(id: resource.id)
+     #                         .order(:created_at)
+     #                         .first
+
+     #         if next_record
+     #           redirect_to edit_admin_student_grade_path(next_record), notice: 'Updated. Moving to next student.' and return
+     #         else
+     #           redirect_to collection_path, notice: 'Updated. No more students.' and return
+     #         end
+     #       end
+     #     end
+     #   end
+     # end
+
      active_admin_import validate: true,
                          headers_rewrites: { 'ID': :student_id },
                          before_batch_import: lambda { |importer|
@@ -74,16 +94,16 @@ ActiveAdmin.register StudentGrade do
     index do
       selectable_column
       column 'Full Name', sortable: 'students.first_name' do |n|
-        [n.student.first_name, n.student.middle_name, n.student.last_name].compact.join(' ')
+        link_to n.student.full_name, admin_student_path(n.student.id)
       end
       column 'Student ID' do |si|
         si.student.student_id
       end
       column 'Program' do |si|
-        si.student.program.program_name
+        link_to si.student.program.program_name, admin_program_path(si.student.program.id)
       end
       column 'Course title' do |si|
-        si.course.course_title
+        link_to si.course.course_title, admin_course_path(si.course.id)
       end
       column :letter_grade
       column :grade_point
@@ -103,6 +123,7 @@ ActiveAdmin.register StudentGrade do
       actions
     end
 
+
     filter :student_id, as: :search_select_filter, url: proc { admin_students_path },
                         fields: %i[student_id id], display_name: 'student_id', minimum_input_length: 2,
                         order_by: 'created_at_asc'
@@ -115,9 +136,21 @@ ActiveAdmin.register StudentGrade do
     filter :department_id, as: :search_select_filter, url: proc { admin_departments_path },
                            fields: %i[department_name id], display_name: 'department_name', minimum_input_length: 2,
                            order_by: 'created_at_asc'
+    filter :course_registration_year_eq, as: :select,
+                                         collection: -> { CourseRegistration.distinct.order(:year).pluck(:year) },
+                                         label: 'Year'
+    filter :course_registration_semester_eq, as: :select,
+                                             collection: lambda {
+                                                           CourseRegistration.distinct.order(:semester).pluck(:semester)
+                                                         },
+                                             label: 'Semester'
+
     filter :letter_grade
     filter :grade_point
     filter :assesment_total
+    filter :department_approval, as: :select, collection: %w[pending approved denied incomplete]
+    filter :dean_approval_status, as: :select, collection: %w[pending approved denied incomplete]
+    filter :instructor_submit_status, as: :select, collection: %w[not_submitted Submitted]
     filter :created_at
     filter :updated_at
     filter :updated_by
@@ -197,7 +230,7 @@ ActiveAdmin.register StudentGrade do
       end
     end
 
-    show title: proc { |student| student.student.name.full } do
+    show title: proc { |student| student.student.full_name } do
       columns do
         column do
           panel 'Grade information' do
@@ -216,14 +249,14 @@ ActiveAdmin.register StudentGrade do
                         admin_section_path(si.course_registration.section.id)
               end
               row 'Academic Calendar' do |si|
-                link_to si.course_registration.academic_calendar.academic_calendar_name,
+                link_to si.course_registration.academic_calendar.calender_year,
                         admin_academic_calendar_path(si.course_registration.academic_calendar.id)
-              end
-              row 'Semester' do |si|
-                si.course_registration.semester
               end
               row 'Year' do |si|
                 si.course_registration.year
+              end
+              row 'Semester' do |si|
+                si.course_registration.semester
               end
               row 'Course title' do |si|
                 link_to si.course.course_title, admin_course_path(si.course.id)

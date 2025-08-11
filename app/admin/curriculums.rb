@@ -1,7 +1,7 @@
 ActiveAdmin.register Curriculum do
 menu parent: "Program",label: "CourseOffering-Curriculum"
  #permit_params :program_id,:curriculum_title,:curriculum_version,:total_course,:total_ects,:total_credit_hour,:active_status,:curriculum_active_date,:depreciation_date,:created_by,:last_updated_by, courses_attributes: [:id,:course_module_id,:program_id,:curriculum_id,:semester,:course_starting_date,:course_ending_date,:year,:credit_hour,:lecture_hour,:lab_hour,:ects,:course_code,:course_title,:created_by,:last_updated_by, :_destroy]
- permit_params :program_id, :curriculum_title, :curriculum_version, :total_course, :total_ects, 
+ permit_params :batch,:program_id, :curriculum_title, :curriculum_version, :total_course, :total_ects, 
               :total_credit_hour, :active_status, :curriculum_active_date, :depreciation_date, 
               :created_by, :last_updated_by, 
               courses_attributes: [:id, :course_module_id, :program_id, :curriculum_id, :semester, 
@@ -20,6 +20,7 @@ menu parent: "Program",label: "CourseOffering-Curriculum"
   selectable_column
   column :curriculum_title
   column  "Version",:curriculum_version
+  column :batch
   column "Program", sortable: true do |d|
     link_to d.program.program_name, [:admin, d.program]
   end
@@ -40,7 +41,9 @@ fields: [:program_name, :id], display_name: 'program_name', minimum_input_length
 order_by: 'id_asc'
 filter :curriculum_title
 filter :curriculum_version
+filter :batch
 filter :total_course
+
 #filter :total_ects
 filter :total_credit_hour
 filter :active_status
@@ -112,7 +115,7 @@ filter :updated_at
   #end
 
   ActiveAdmin.register Curriculum do
-    permit_params :program_id, :curriculum_title, :curriculum_version, :total_course, :total_ects, 
+    permit_params :batch, :program_id, :curriculum_title, :curriculum_version, :total_course, :total_ects, 
                   :total_credit_hour, :active_status, :curriculum_active_date, :depreciation_date, 
                   :created_by, :last_updated_by, 
                   courses_attributes: [:id, :course_module_id, :program_id, :curriculum_id, :semester, 
@@ -162,6 +165,19 @@ filter :updated_at
         order_by: 'id_asc'
       f.input :curriculum_title
       f.input :curriculum_version
+      f.input :batch, as: :select, collection: [
+                '2019/2020',
+                '2020/2021',
+                '2021/2022',
+                '2022/2023',
+                '2023/2024',
+                '2024/2025',
+                '2025/2026',
+                '2026/2027',
+                '2027/2028',
+                '2028/2029',
+                '2029/2030'
+              ], include_blank: false
       f.input :total_course
       f.input :total_ects
       f.input :total_credit_hour
@@ -236,6 +252,7 @@ filter :updated_at
             end
             row :curriculum_title
             row :curriculum_version
+            row :batch
             row :total_course
             row :total_ects
             row :total_credit_hour

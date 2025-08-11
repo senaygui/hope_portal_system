@@ -4,7 +4,7 @@ class Program < ApplicationRecord
   
 
 	##validations
-    validates :program_name , :presence => true,:length => { :within => 2..50 }
+    validates :program_name , :presence => true,:length => { :within => 2..50 }, uniqueness: true
     validates :study_level , :presence => true
     validates :admission_type , :presence => true
     validates :program_duration , :presence => true
