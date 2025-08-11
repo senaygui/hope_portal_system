@@ -124,8 +124,8 @@ ActiveAdmin.register_page 'BulkAssessments' do
                 label = [
                   "Course: #{ci.course&.course_title}",
                   (ci.section&.section_full_name || 'No Section'),
-                  "Year: #{ci.year}",
-                  "Semester: #{ci.semester}",
+                  "Year: #{ci.section.year}",
+                  "Semester: #{ci.section.semester}",
                   "Calendar Year: #{ci.academic_calendar&.calender_year}"
                 ].compact.join(' | ')
                 [label, ci.id]
