@@ -147,6 +147,7 @@ class Ability
       can :read, Notice
       can :read, StudentGrade, course_id: Course.instructor_courses(user.id)
       can :update, StudentGrade, course_id: Course.instructor_courses(user.id)
+      cannot %i[destroy update], StudentGrade, instructor_submit_status: 'submitted'
       # Destroy action with a block for additional conditions
       can :destroy, StudentGrade do |grade|
         Course.instructor_courses(user.id).include?(grade.course_id) && grade.created_at >= 15.days.ago
