@@ -3,25 +3,23 @@ ActiveAdmin.register StudentGrade do
     permit_params :dean_approval_status, :instructor_submit_status, :instructor_name, :dean_head_name, :department_approval, :department_head_name, :department_head_date_of_response, :course_registration_id,
                   :student_id, :letter_grade, :grade_point, :assesment_total, :grade_point, :course_id, assessments_attributes: %i[id student_grade_id assessment_plan_id student_id course_id result created_by updated_by _destroy]
 
-     # controller do
-     #   def update
-     #     super do |success, _failure|
-     #       if success
-     #         next_record = StudentGrade
-     #                         .where(instructor_submit_status: 'not_submitted')
-     #                         .where.not(id: resource.id)
-     #                         .order(:created_at)
-     #                         .first
+    # Limit listing: instructors see only their assigned students; admins see all
+    controller do
+      def scoped_collection
+        base = super.includes(:student, :course, course_registration: %i[academic_calendar section])
+        return base if current_admin_user.role == 'admin'
 
-     #         if next_record
-     #           redirect_to edit_admin_student_grade_path(next_record), notice: 'Updated. Moving to next student.' and return
-     #         else
-     #           redirect_to collection_path, notice: 'Updated. No more students.' and return
-     #         end
-     #       end
-     #     end
-     #   end
-     # end
+        if current_admin_user.role == 'instructor'
+          # Join with course_instructors on course_id, section_id, academic_calendar_id
+          base
+            .joins(:course_registration)
+            .joins("INNER JOIN course_instructors ci ON ci.course_id = student_grades.course_id AND ci.section_id = course_registrations.section_id AND ci.academic_calendar_id = course_registrations.academic_calendar_id")
+            .where(ci: { admin_user_id: current_admin_user.id })
+        else
+          base
+        end
+      end
+    end
 
      active_admin_import validate: true,
                          headers_rewrites: { 'ID': :student_id },
@@ -47,7 +45,7 @@ ActiveAdmin.register StudentGrade do
     # action_item :update, only: :show do
     #   link_to 'Generate Grade', generate_grade_admin_student_grade_path(student_grade.id), method: :put, data: { confirm: 'Are you sure?' }
     # end
-
+ 
     batch_action 'Generate Grade for', method: :put, if: proc {
       current_admin_user.role == 'instructor' || current_admin_user.role == 'admin'
     }, confirm: 'Are you sure?' do |ids|
