@@ -154,8 +154,8 @@ ActiveAdmin.register_page 'BulkAssessments' do
                                   course_id: ci.course_id,
                                   section_id: ci.section_id,
                                   academic_calendar_id: ci.academic_calendar_id,
-                                  year: ci.year,
-                                  semester: ci.semester
+                                  year: ci.section.year,
+                                  semester: ci.section.semester
                                 })
                          .includes(:student, :assessments)
                          .order('students.first_name ASC')
