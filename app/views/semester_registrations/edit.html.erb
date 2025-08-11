@@ -78,7 +78,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% current_student.program.curriculums.where(active_status: 'active', batch: batch).first.courses.where(year: current_student.year, semester: current_student.semester).order('year ASC
+                <% current_student.program.curriculums.where(active_status: 'active', batch: current_student.batch).first.courses.where(year: current_student.year, semester: current_student.semester).order('year ASC
 ','semester ASC').each do |course_registration| %>
                   <tr>
                     <td><%= course_registration.course_title %></td>
