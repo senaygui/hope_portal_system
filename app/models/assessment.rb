@@ -1,6 +1,6 @@
 class Assessment < ApplicationRecord
   # #vaildations
-  validate :limit_assessment_result
+  # validate :limit_assessment_result
   # #associations
   belongs_to :student_grade
   belongs_to :student, optional: true
@@ -77,7 +77,7 @@ class Assessment < ApplicationRecord
 
   # private
 
-  def limit_assessment_result
-    errors[:result] << 'The assessment result reached the maximum value' if result > assessment_plan.assessment_weight
-  end
+  # def limit_assessment_result
+  #   errors[:result] << 'The assessment result reached the maximum value' if result > assessment_plan.assessment_weight
+  # end
 end
