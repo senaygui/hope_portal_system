@@ -118,7 +118,22 @@ ActiveAdmin.register StudentGrade do
       column 'Created At', sortable: true do |c|
         c.created_at.strftime('%b %d, %Y')
       end
-      actions
+      actions defaults: false do |sg|
+        # Always show View
+        item 'View', admin_student_grade_path(sg)
+
+        submitted = sg.instructor_submit_status.to_s.downcase == 'submitted'
+
+        # Show Edit only if not submitted and authorized
+        if !submitted && authorized?(:update, sg)
+          item 'Edit', edit_admin_student_grade_path(sg)
+        end
+
+        # Show Delete only if not submitted and authorized
+        if !submitted && authorized?(:destroy, sg)
+          item 'Delete', admin_student_grade_path(sg), method: :delete, data: { confirm: 'Are you sure?' }
+        end
+      end
     end
 
 

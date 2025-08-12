@@ -90,7 +90,7 @@ class Ability
       can :manage, EmergencyContact
       can :manage, Payment
       # can :manage, CourseSection
-      can :manage, StudentGrade
+      can :manage, StudentGrade, instructor_submit_status: 'not_submitted'
       # can :update, StudentGrade
       # can :destroy, StudentGrade
       # cannot :create, StudentGrade
@@ -132,7 +132,6 @@ class Ability
       can :manage, StudentGrade
       can :manage, Exemption
       can :manage, Notice
-
     when 'instructor'
       can :manage, ActiveAdmin::Page, name: 'BulkAssessments', namespace_name: 'admin'
       can :manage, ActiveAdmin::Page, name: 'Dashboard', namespace_name: 'admin'
@@ -146,7 +145,8 @@ class Ability
       can %i[read destroy], StudentGrade, course_id: Course.instructor_courses(user.id)
       can :read, Notice
       can :read, StudentGrade, course_id: Course.instructor_courses(user.id)
-      can :update, StudentGrade, course_id: Course.instructor_courses(user.id)
+      can :update, StudentGrade, course_id: Course.instructor_courses(user.id), instructor_submit_status: 'not_submitted'
+      can :destroy, StudentGrade, course_id: Course.instructor_courses(user.id), instructor_submit_status: 'not_submitted'
       cannot %i[destroy update], StudentGrade, instructor_submit_status: 'submitted'
       # Destroy action with a block for additional conditions
       can :destroy, StudentGrade do |grade|
